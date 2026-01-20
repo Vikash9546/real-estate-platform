@@ -169,10 +169,22 @@ exports.deleteProperty = async (req, res) => {
     if (property.ownerId !== req.user.id)
       return res.status(403).json({ message: "Not authorized" });
 
+    // First, delete all wishlist entries for this property
+    await prisma.wishlist.deleteMany({
+      where: { propertyId: req.params.id },
+    });
+
+    // Delete all inquiries for this property
+    await prisma.inquiry.deleteMany({
+      where: { propertyId: req.params.id },
+    });
+
+    // Finally, delete the property itself
     await prisma.property.delete({ where: { id: req.params.id } });
 
-    res.json({ message: "Property deleted" });
+    res.json({ message: "Property deleted successfully" });
   } catch (error) {
+    console.error("Delete property error:", error);
     res.status(500).json({ message: error.message });
   }
 };
