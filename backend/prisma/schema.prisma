@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+enum Role {
+  USER
+  OWNER
+  ADMIN
+}
+
+enum PropertyStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+
+  properties Property[]
+  wishlist   Wishlist[]
+  inquiries  Inquiry[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  price       Int
+  city        String
+  address     String
+  area        Int
+  bedrooms    Int
+  bathrooms   Int
+  furnished   Boolean        @default(false)
+  type        String
+  listingType String
+  image       String[]
+
+  status      PropertyStatus @default(PENDING)
+
+  ownerId     String   @db.ObjectId
+  owner       User     @relation(fields: [ownerId], references: [id])
+
+  wishlist    Wishlist[]
+  inquiries   Inquiry[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Wishlist {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId     String   @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+
+  propertyId String   @db.ObjectId
+  property   Property @relation(fields: [propertyId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Inquiry {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  message    String
+  status     String   @default("PENDING")
+
+  userId     String   @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+
+  propertyId String   @db.ObjectId
+  property   Property @relation(fields: [propertyId], references: [id])
+
+  createdAt DateTime @default(now())
+}
