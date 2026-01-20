@@ -23,8 +23,16 @@ export default function Login() {
     try {
       const res = await loginUser(form);
       localStorage.setItem("token", res.data.token);
-      await fetchMe();
-      navigate("/");
+      const userData = await fetchMe();
+
+      // Redirect based on user role
+      if (userData.role === "ADMIN") {
+        navigate("/admin/dashboard");
+      } else if (userData.role === "OWNER") {
+        navigate("/owner/my-listings");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setError(err?.response?.data?.message || "Login failed");
     } finally {

@@ -12,15 +12,17 @@ export default function AuthProvider({ children }) {
     if (!token) {
       setUser(null);
       setLoading(false);
-      return;
+      return null;
     }
 
     try {
       const res = await getMe();
       setUser(res.data); // must include role
+      return res.data; // Return user data for immediate use
     } catch (err) {
       localStorage.removeItem("token");
       setUser(null);
+      return null;
     } finally {
       setLoading(false);
     }
