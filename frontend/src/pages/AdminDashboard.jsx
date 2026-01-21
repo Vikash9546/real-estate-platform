@@ -17,6 +17,7 @@ export default function AdminDashboard() {
   const [allProperties, setAllProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("pending");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = async () => {
     try {
@@ -100,61 +101,82 @@ export default function AdminDashboard() {
               </div>
             </div>
 
+            {/* Search Bar */}
+            <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+              <input
+                type="text"
+                placeholder="Search by title, city, or ID..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all"
+              />
+            </div>
+
             {loading ? (
               <div className="p-8 text-center text-slate-500">Loading properties...</div>
-            ) : (activeTab === "pending" ? pending : allProperties).length === 0 ? (
+            ) : (activeTab === "pending" ? pending : allProperties).filter(p =>
+              p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              p.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              p.id.toLowerCase().includes(searchQuery.toLowerCase())
+            ).length === 0 ? (
               <div className="p-12 text-center text-slate-500">
-                <p>No properties found.</p>
+                <p>No properties found matching "{searchQuery}".</p>
               </div>
             ) : (
               <div className="divide-y divide-slate-200 dark:divide-slate-800">
-                {(activeTab === "pending" ? pending : allProperties).map((p) => (
-                  <div key={p.id} className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                    <div>
-                      <h4 className="font-bold text-slate-900 dark:text-white text-lg">{p.title}</h4>
-                      <p className="text-sm text-slate-500">{p.city} • ₹{p.price}</p>
-                      <p className="text-xs text-slate-400 mt-1">Status: <span className={`font-semibold ${p.status === 'APPROVED' ? 'text-emerald-500' : p.status === 'REJECTED' ? 'text-red-500' : 'text-amber-500'}`}>{p.status}</span> • ID: {p.id}</p>
-                    </div>
+                {(activeTab === "pending" ? pending : allProperties)
+                  .filter(p =>
+                    p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    p.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    p.id.toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                  .map((p) => (
+                    <div key={p.id} className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                      <div>
+                        <h4 className="font-bold text-slate-900 dark:text-white text-lg">{p.title}</h4>
+                        <p className="text-sm text-slate-500">{p.city} • ₹{p.price}</p>
+                        <p className="text-xs text-slate-400 mt-1">Status: <span className={`font-semibold ${p.status === 'APPROVED' ? 'text-emerald-500' : p.status === 'REJECTED' ? 'text-red-500' : 'text-amber-500'}`}>{p.status}</span> • ID: {p.id}</p>
+                      </div>
 
-                    <div className="flex items-center gap-3">
-                      {activeTab === "pending" ? (
-                        <>
-                          <Button
-                            variant="primary"
-                            onClick={() => handleApprove(p.id)}
-                            className="!bg-emerald-600 hover:!bg-emerald-700 !shadow-none"
-                          >
-                            Approve
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => handleReject(p.id)}
-                            className="!text-red-600 !border-red-200 hover:!bg-red-50"
-                          >
-                            Reject
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <Button
-                            variant="outline"
-                            onClick={() => navigate(`/property/edit/${p.id}`)}
-                            className="!px-3 !py-1.5"
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => handleDelete(p.id)}
-                            className="!px-3 !py-1.5 !text-red-600 !border-red-200 hover:!bg-red-50"
-                          >
-                            Delete
-                          </Button>
-                        </>
-                      )}
+                      <div className="flex items-center gap-3">
+                        {activeTab === "pending" ? (
+                          <>
+                            <Button
+                              variant="primary"
+                              onClick={() => handleApprove(p.id)}
+                              className="!bg-emerald-600 hover:!bg-emerald-700 !shadow-none"
+                            >
+                              Approve
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={() => handleReject(p.id)}
+                              className="!text-red-600 !border-red-200 hover:!bg-red-50"
+                            >
+                              Reject
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              variant="outline"
+                              onClick={() => navigate(`/property/edit/${p.id}`)}
+                              className="!px-3 !py-1.5"
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={() => handleDelete(p.id)}
+                              className="!px-3 !py-1.5 !text-red-600 !border-red-200 hover:!bg-red-50"
+                            >
+                              Delete
+                            </Button>
+                          </>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
           </div>
