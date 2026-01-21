@@ -62,10 +62,11 @@ export default function Navbar() {
             <NavLink to="/wishlist">Wishlist</NavLink>
 
             {(user?.role === "OWNER" || user?.role === "ADMIN") && (
-              <>
-                <NavLink to="/owner/add-property">Add Property</NavLink>
-                <NavLink to="/owner/my-listings">My Listings</NavLink>
-              </>
+              <NavLink to="/owner/add-property">Add Property</NavLink>
+            )}
+
+            {user?.role === "OWNER" && (
+              <NavLink to="/owner/my-listings">My Listings</NavLink>
             )}
 
             {user?.role === "ADMIN" && (
