@@ -110,12 +110,10 @@ export default function Register() {
               >
                 <option value="USER">User - Browse and rent properties</option>
                 <option value="OWNER">Owner - List and manage properties</option>
-                <option value="ADMIN">Admin - Full platform management</option>
               </select>
               <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
                 {form.role === "USER" && "Browse properties, save favorites, and contact owners"}
                 {form.role === "OWNER" && "List your properties and manage rental inquiries"}
-                {form.role === "ADMIN" && "Approve listings and manage the platform"}
               </p>
             </div>
 
