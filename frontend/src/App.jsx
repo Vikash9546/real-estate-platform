@@ -9,6 +9,7 @@ import OwnerDashboard from "./pages/OwnerDashboard";
 import AddProperty from "./pages/AddProperty";
 import MyListings from "./pages/MyListings";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminLogin from "./pages/AdminLogin";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
 
         <Route path="/property/:id" element={<PropertyDetails />} />
 
