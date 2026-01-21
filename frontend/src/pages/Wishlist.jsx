@@ -44,12 +44,17 @@ export default function Wishlist() {
 
   const handleRemove = async (propertyId) => {
     try {
-      if (window.confirm("Remove this property from wishlist?")) {
-        await removeFromWishlist(propertyId);
-        fetchWishlist();
-      }
+      // Optimistic update: Remove immediately from UI
+      setWishlist((prev) => prev.filter((item) => item.propertyId !== propertyId));
+
+      await removeFromWishlist(propertyId);
+
+      // Verification: User requested a popup message
+      // Using setTimeout to ensure UI updates first
+      setTimeout(() => alert("Property removed successfully"), 100);
     } catch (err) {
       alert(err?.response?.data?.message || "Failed to remove");
+      fetchWishlist(); // Revert/Refresh on error
     }
   };
 
@@ -105,7 +110,7 @@ export default function Wishlist() {
                     e.stopPropagation();
                     handleRemove(w.propertyId);
                   }}
-                  className="absolute top-4 right-4 z-50 p-2 bg-white/90 text-red-500 rounded-full shadow-sm hover:bg-red-50 transition-colors"
+                  className="absolute top-2 right-2 z-[60] w-8 h-8 flex items-center justify-center bg-white text-red-500 rounded-full shadow-md hover:bg-red-50 hover:scale-110 transition-all font-bold"
                   title="Remove from wishlist"
                 >
                   ✕
