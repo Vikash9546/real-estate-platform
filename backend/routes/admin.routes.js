@@ -6,6 +6,7 @@ const roleMiddleware = require("../middlewares/role.middleware");
 const {
   getAllUsers,
   getPendingProperties,
+  getAllAdminProperties,
   approveProperty,
   rejectProperty,
 } = require("../controllers/admin.controller");
@@ -18,6 +19,13 @@ router.get(
   authMiddleware,
   roleMiddleware(["ADMIN"]),
   getPendingProperties
+);
+
+router.get(
+  "/properties/all",
+  authMiddleware,
+  roleMiddleware(["ADMIN"]),
+  getAllAdminProperties
 );
 
 router.put(

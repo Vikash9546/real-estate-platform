@@ -151,7 +151,7 @@ exports.updateProperty = async (req, res) => {
 
     if (!property) return res.status(404).json({ message: "Property not found" });
 
-    if (property.ownerId !== req.user.id)
+    if (property.ownerId !== req.user.id && req.user.role !== "ADMIN")
       return res.status(403).json({ message: "Not authorized" });
 
     const updated = await prisma.property.update({
@@ -174,7 +174,7 @@ exports.deleteProperty = async (req, res) => {
 
     if (!property) return res.status(404).json({ message: "Property not found" });
 
-    if (property.ownerId !== req.user.id)
+    if (property.ownerId !== req.user.id && req.user.role !== "ADMIN")
       return res.status(403).json({ message: "Not authorized" });
 
     // First, delete all wishlist entries for this property

@@ -57,9 +57,23 @@ const rejectProperty = async (req, res) => {
   }
 };
 
+// GET all properties (Admin)
+const getAllAdminProperties = async (req, res) => {
+  try {
+    const properties = await prisma.property.findMany({
+      orderBy: { createdAt: "desc" },
+      include: { owner: { select: { id: true, name: true, email: true } } },
+    });
+    return res.json(properties);
+  } catch (err) {
+    return res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getPendingProperties,
+  getAllAdminProperties,
   approveProperty,
   rejectProperty,
 };

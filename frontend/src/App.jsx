@@ -11,6 +11,7 @@ import MyListings from "./pages/MyListings";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import ForgotPassword from "./pages/ForgotPassword";
+import EditProperty from "./pages/EditProperty";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/admin" element={<AdminLogin />} />
 
         <Route path="/property/:id" element={<PropertyDetails />} />
+        <Route path="/property/edit/:id" element={<EditProperty />} />
 
         <Route path="/wishlist" element={<Wishlist />} />
 
