@@ -2,10 +2,14 @@ const nodemailer = require("nodemailer");
 
 const sendEmail = async (options) => {
     // 1. Create a transporter
+    if (!process.env.SMTP_HOST) {
+        throw new Error("SMTP_HOST is not defined in environment variables");
+    }
+
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
         port: process.env.SMTP_PORT,
-        secure: false, // true for 465, false for other ports
+        secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
         auth: {
             user: process.env.SMTP_EMAIL,
             pass: process.env.SMTP_PASSWORD,
