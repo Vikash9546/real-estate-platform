@@ -102,9 +102,10 @@ export default function Wishlist() {
                 <button
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     handleRemove(w.propertyId);
                   }}
-                  className="absolute top-4 right-4 z-10 p-2 bg-white/90 text-red-500 rounded-full shadow-sm hover:bg-red-50 transition-colors"
+                  className="absolute top-4 right-4 z-50 p-2 bg-white/90 text-red-500 rounded-full shadow-sm hover:bg-red-50 transition-colors"
                   title="Remove from wishlist"
                 >
                   ✕
