@@ -90,8 +90,8 @@ exports.getAllProperties = async (req, res) => {
     }
 
     let orderBy = { createdAt: "desc" };
-    if (sort === "price_asc") orderBy = { price: "asc" };
-    if (sort === "price_desc") orderBy = { price: "desc" };
+    if (sort === "priceAsc") orderBy = { price: "asc" };
+    if (sort === "priceDesc") orderBy = { price: "desc" };
 
     console.log("🛠 Constructed Filters:", JSON.stringify(filters, null, 2));
 
