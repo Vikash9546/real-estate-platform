@@ -89,9 +89,17 @@ exports.getAllProperties = async (req, res) => {
       if (maxPrice) filters.price.lte = Number(maxPrice);
     }
 
+    // Default: newest first
     let orderBy = { createdAt: "desc" };
-    if (sort === "priceAsc") orderBy = { price: "asc" };
-    if (sort === "priceDesc") orderBy = { price: "desc" };
+
+    // Handle sort parameter explicitly
+    if (sort === "newest") {
+      orderBy = { createdAt: "desc" };
+    } else if (sort === "priceAsc") {
+      orderBy = { price: "asc" };
+    } else if (sort === "priceDesc") {
+      orderBy = { price: "desc" };
+    }
 
     console.log("🛠 Constructed Filters:", JSON.stringify(filters, null, 2));
 
