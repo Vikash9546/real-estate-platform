@@ -203,38 +203,72 @@ export default function Home() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-12">
+              <div className="flex items-center justify-center gap-2 mt-12 flex-wrap">
                 <Button
                   onClick={() => goToPage(data.page - 1)}
                   disabled={data.page === 1}
                   variant="outline"
-                  className="!px-3"
+                  className="!px-4"
                 >
-                  ←
+                  Previous
                 </Button>
 
                 <div className="flex items-center gap-1">
-                  {Array.from({ length: totalPages }).map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => goToPage(i + 1)}
-                      className={`w-10 h-10 rounded-lg text-sm font-bold transition-colors ${data.page === i + 1
-                        ? "bg-primary-600 text-white shadow-lg shadow-primary-500/30"
-                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
-                        }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
+                  {(() => {
+                    const pages = [];
+                    // Always show first page
+                    pages.push(1);
+
+                    // Calculate range around current page
+                    let start = Math.max(2, data.page - 1);
+                    let end = Math.min(totalPages - 1, data.page + 1);
+
+                    // Add ellipsis before range if needed
+                    if (start > 2) {
+                      pages.push("...");
+                    }
+
+                    // Add pages in range
+                    for (let i = start; i <= end; i++) {
+                      pages.push(i);
+                    }
+
+                    // Add ellipsis after range if needed
+                    if (end < totalPages - 1) {
+                      pages.push("...");
+                    }
+
+                    // Always show last page if it's not the first page
+                    if (totalPages > 1) {
+                      pages.push(totalPages);
+                    }
+
+                    return pages.map((p, i) => (
+                      p === "..." ? (
+                        <span key={`ellipsis-${i}`} className="px-2 text-slate-400">...</span>
+                      ) : (
+                        <button
+                          key={p}
+                          onClick={() => goToPage(p)}
+                          className={`w-10 h-10 rounded-lg text-sm font-bold transition-colors ${data.page === p
+                            ? "bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                            : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            }`}
+                        >
+                          {p}
+                        </button>
+                      )
+                    ));
+                  })()}
                 </div>
 
                 <Button
                   onClick={() => goToPage(data.page + 1)}
                   disabled={data.page === totalPages}
                   variant="outline"
-                  className="!px-3"
+                  className="!px-4"
                 >
-                  →
+                  Next
                 </Button>
               </div>
             )}

@@ -2,19 +2,26 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import { forgotPassword } from "../api/authApi";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
-    const [status, setStatus] = useState("idle"); // idle, loading, success, error
+    const [status, setStatus] = useState("idle");
+    const [error, setError] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus("loading");
+        setError("");
 
-        // Simulate API call delay
-        setTimeout(() => {
+        try {
+            await forgotPassword({ email });
             setStatus("success");
-        }, 1500);
+        } catch (err) {
+            console.error(err);
+            setStatus("error");
+            setError(err?.response?.data?.message || "Something went wrong. Please try again.");
+        }
     };
 
     return (
@@ -30,6 +37,12 @@ export default function ForgotPassword() {
                             Enter your email and we'll send you a link to reset your password.
                         </p>
                     </div>
+
+                    {error && (
+                        <div className="mb-6 p-4 rounded-lg bg-red-50 text-red-600 text-sm border border-red-100 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300">
+                            {error}
+                        </div>
+                    )}
 
                     {status === "success" ? (
                         <div className="text-center animate-fade-in">
