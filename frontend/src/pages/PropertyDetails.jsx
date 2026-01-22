@@ -4,11 +4,13 @@ import { useParams } from "react-router-dom";
 import { getPropertyById } from "../api/propertyApi";
 import { addToWishlist } from "../api/wishlistApi";
 import Button from "../components/Button";
+import ContactModal from "../components/ContactModal";
 
 export default function PropertyDetails() {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const fetchProperty = async () => {
     try {
@@ -142,7 +144,7 @@ export default function PropertyDetails() {
                 <Button
                   variant="primary"
                   className="w-full !py-3 !text-base"
-                  onClick={() => alert("Contact feature coming soon!")}
+                  onClick={() => setIsContactModalOpen(true)}
                 >
                   Contact Owner
                 </Button>
@@ -167,6 +169,13 @@ export default function PropertyDetails() {
           </div>
         </div>
       </main>
+
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        propertyId={id}
+        propertyTitle={property.title}
+      />
     </div>
   );
 }
