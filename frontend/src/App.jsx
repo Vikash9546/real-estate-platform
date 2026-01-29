@@ -12,6 +12,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import ForgotPassword from "./pages/ForgotPassword";
 import EditProperty from "./pages/EditProperty";
+import OwnerInquiries from "./pages/OwnerInquiries";
+import Chat from "./pages/Chat";
 
 export default function App() {
   return (
@@ -32,6 +34,9 @@ export default function App() {
         <Route path="/owner/dashboard" element={<OwnerDashboard />} />
         <Route path="/owner/add-property" element={<AddProperty />} />
         <Route path="/owner/my-listings" element={<MyListings />} />
+        <Route path="/owner/inquiries" element={<OwnerInquiries />} />
+
+        <Route path="/chat/:otherUserId" element={<Chat />} />
 
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>

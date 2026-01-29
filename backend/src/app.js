@@ -6,6 +6,7 @@ const propertyRoutes = require("../routes/property.routes");
 const wishlistRoutes = require("../routes/wishlist.routes");
 const inquiryRoutes = require("../routes/inquiry.routes");
 const adminRoutes = require("../routes/admin.routes");
+const messageRoutes = require("../routes/message.routes");
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use("/api/properties", propertyRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/messages", messageRoutes);
 
 module.exports = app;

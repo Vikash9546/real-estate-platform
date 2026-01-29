@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getPropertyById } from "../api/propertyApi";
 import { addToWishlist } from "../api/wishlistApi";
 import Button from "../components/Button";
@@ -8,6 +8,7 @@ import ContactModal from "../components/ContactModal";
 
 export default function PropertyDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -147,6 +148,13 @@ export default function PropertyDetails() {
                   onClick={() => setIsContactModalOpen(true)}
                 >
                   Contact Owner
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full !py-3 !text-base !border-primary-600 !text-primary-600"
+                  onClick={() => navigate(`/chat/${property.ownerId}`)}
+                >
+                  💬 Chat with Owner
                 </Button>
                 <Button
                   variant="outline"

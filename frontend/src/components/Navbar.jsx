@@ -69,6 +69,10 @@ export default function Navbar() {
               <NavLink to="/owner/my-listings">My Listings</NavLink>
             )}
 
+            {(user?.role === "OWNER" || user?.role === "ADMIN") && (
+              <NavLink to="/owner/inquiries">Inquiries</NavLink>
+            )}
+
             {user?.role === "ADMIN" && (
               <NavLink to="/admin/dashboard">Admin</NavLink>
             )}

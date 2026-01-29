@@ -36,6 +36,9 @@ model User {
   properties Property[]
   wishlist   Wishlist[]
   inquiries  Inquiry[]
+  
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -92,6 +95,24 @@ model Inquiry {
 
   propertyId String   @db.ObjectId
   property   Property @relation(fields: [propertyId], references: [id])
+
+  messages   Message[]
+
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  
+  senderId  String   @db.ObjectId
+  sender    User     @relation("SentMessages", fields: [senderId], references: [id])
+  
+  receiverId String  @db.ObjectId
+  receiver   User    @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  
+  inquiryId String?  @db.ObjectId
+  inquiry   Inquiry? @relation(fields: [inquiryId], references: [id])
 
   createdAt DateTime @default(now())
 }
