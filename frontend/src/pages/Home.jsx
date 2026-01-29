@@ -103,7 +103,7 @@ export default function Home() {
 
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8 flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 animate-fade-in">
-            Find Your Dream <span className="text-primary-400">Home</span>
+            Find Your Dream Home
           </h1>
           <p className="max-w-2xl text-lg md:text-xl text-slate-300 mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Discover the perfect property from our wide selection of verified listings.
