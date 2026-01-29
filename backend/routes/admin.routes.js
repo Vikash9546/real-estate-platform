@@ -11,7 +11,7 @@ const {
   rejectProperty,
 } = require("../controllers/admin.controller");
 
-// Admin only
+
 router.get("/users", authMiddleware, roleMiddleware(["ADMIN"]), getAllUsers);
 
 router.get(

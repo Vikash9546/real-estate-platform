@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 const sendEmail = async (options) => {
-    // 1. Create a transporter
+
     if (!process.env.SMTP_HOST) {
         throw new Error("SMTP_HOST is not defined in environment variables");
     }
@@ -9,14 +9,14 @@ const sendEmail = async (options) => {
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
         port: process.env.SMTP_PORT,
-        secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
+        secure: Number(process.env.SMTP_PORT) === 465,
         auth: {
             user: process.env.SMTP_EMAIL,
             pass: process.env.SMTP_PASSWORD,
         },
     });
 
-    // 2. Define email options
+
     const mailOptions = {
         from: `"Real Estate Support" <${process.env.SMTP_EMAIL}>`,
         to: options.email,
@@ -25,7 +25,7 @@ const sendEmail = async (options) => {
         html: options.html,
     };
 
-    // 3. Send email
+
     const info = await transporter.sendMail(mailOptions);
 
     console.log("Message sent: %s", info.messageId);

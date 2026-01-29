@@ -135,7 +135,7 @@ export default function PropertyDetails() {
 
               <div className="space-y-3">
                 <Button
-                  onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.address + ", " + property.city)}`, '_blank')}
+                  onClick={() => window.open(property.googleLocation || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.address + ", " + property.city)}`, '_blank')}
                   variant="outline"
                   className="w-full !py-3 !text-base !border-primary-600 !text-primary-600 hover:!bg-primary-50"
                 >

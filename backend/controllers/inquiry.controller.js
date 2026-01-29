@@ -1,6 +1,6 @@
 const prisma = require("../config/db");
 
-// Create Inquiry
+
 exports.createInquiry = async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -21,7 +21,7 @@ exports.createInquiry = async (req, res) => {
   }
 };
 
-// Owner get inquiries
+
 exports.getOwnerInquiries = async (req, res) => {
   try {
     const inquiries = await prisma.inquiry.findMany({
@@ -43,7 +43,7 @@ exports.getOwnerInquiries = async (req, res) => {
   }
 };
 
-// Update Inquiry Status
+
 exports.updateInquiryStatus = async (req, res) => {
   try {
     const { id } = req.params;

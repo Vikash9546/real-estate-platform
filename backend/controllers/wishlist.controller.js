@@ -1,6 +1,6 @@
 const prisma = require("../config/db");
 
-// Add to Wishlist
+
 exports.addToWishlist = async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -24,7 +24,7 @@ exports.addToWishlist = async (req, res) => {
   }
 };
 
-// Get Wishlist
+
 exports.getWishlist = async (req, res) => {
   try {
     const wishlist = await prisma.wishlist.findMany({
@@ -38,7 +38,7 @@ exports.getWishlist = async (req, res) => {
   }
 };
 
-// Remove Wishlist
+
 exports.removeWishlist = async (req, res) => {
   try {
     const { propertyId } = req.params;

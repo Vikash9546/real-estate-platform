@@ -9,7 +9,7 @@ const {
   updateInquiryStatus,
 } = require("../controllers/inquiry.controller");
 
-// User creates inquiry
+
 router.post(
   "/:propertyId",
   authMiddleware,
@@ -17,7 +17,7 @@ router.post(
   createInquiry
 );
 
-// Owner sees inquiries
+
 router.get(
   "/owner/all",
   authMiddleware,
@@ -25,7 +25,7 @@ router.get(
   getOwnerInquiries
 );
 
-// Owner updates inquiry status
+
 router.put(
   "/:id/status",
   authMiddleware,

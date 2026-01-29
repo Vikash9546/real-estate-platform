@@ -76,20 +76,16 @@ exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
 
-    // 1. Check if user exists
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       return res.status(404).json({ message: "User with that email does not exist" });
     }
 
-    // 2. Generate a special reset token (valid for 15 mins)
-    // We sign it with the user's password hash so it becomes invalid if password changes
     const secret = process.env.JWT_SECRET + user.password;
     const token = jwt.sign({ id: user.id, email: user.email }, secret, {
       expiresIn: "15m",
     });
 
-    // 3. Create reset link
     const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
     const resetUrl = `${frontendUrl}/reset-password/${user.id}/${token}`;
 
@@ -100,7 +96,7 @@ exports.forgotPassword = async (req, res) => {
       <p>If you didn't request this, please ignore this email.</p>
     `;
 
-    // 4. Send Email
+
     await sendEmail({
       email: user.email,
       subject: "Password Reset Token",

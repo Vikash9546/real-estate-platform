@@ -1,6 +1,6 @@
 const prisma = require("../config/db");
 
-// Create Property (OWNER)
+
 exports.createProperty = async (req, res) => {
   try {
     const {
@@ -16,6 +16,7 @@ exports.createProperty = async (req, res) => {
       type,
       listingType,
       images,
+      googleLocation,
     } = req.body;
 
     const property = await prisma.property.create({
@@ -32,6 +33,7 @@ exports.createProperty = async (req, res) => {
         type: type || "APARTMENT",
         listingType: listingType || "RENT",
         image: images || [],
+        googleLocation: googleLocation || "",
         ownerId: req.user.id,
         status: "PENDING",
       },
@@ -43,7 +45,7 @@ exports.createProperty = async (req, res) => {
   }
 };
 
-// Get All Properties (Public + Filters)
+
 exports.getAllProperties = async (req, res) => {
   try {
     const {
@@ -78,7 +80,7 @@ exports.getAllProperties = async (req, res) => {
     if (type) filters.type = type;
     if (bedrooms) filters.bedrooms = Number(bedrooms);
 
-    // Only filter furnished if it's explicitly 'true' or 'false'. Ignore if it's '' (Any)
+
     if (furnished === "true" || furnished === "false") {
       filters.furnished = furnished === "true";
     }
@@ -89,10 +91,10 @@ exports.getAllProperties = async (req, res) => {
       if (maxPrice) filters.price.lte = Number(maxPrice);
     }
 
-    // Default: newest first
+
     let orderBy = { createdAt: "desc" };
 
-    // Handle sort parameter explicitly
+
     if (sort === "newest") {
       orderBy = { createdAt: "desc" };
     } else if (sort === "priceAsc") {
@@ -126,7 +128,7 @@ exports.getAllProperties = async (req, res) => {
   }
 };
 
-// Get Property By ID
+
 exports.getPropertyById = async (req, res) => {
   try {
     const property = await prisma.property.findUnique({
@@ -142,7 +144,7 @@ exports.getPropertyById = async (req, res) => {
   }
 };
 
-// Update Property (Owner only)
+
 exports.updateProperty = async (req, res) => {
   try {
     const property = await prisma.property.findUnique({
@@ -165,7 +167,7 @@ exports.updateProperty = async (req, res) => {
   }
 };
 
-// Delete Property (Owner only)
+
 exports.deleteProperty = async (req, res) => {
   try {
     const property = await prisma.property.findUnique({
@@ -177,17 +179,17 @@ exports.deleteProperty = async (req, res) => {
     if (property.ownerId !== req.user.id && req.user.role !== "ADMIN")
       return res.status(403).json({ message: "Not authorized" });
 
-    // First, delete all wishlist entries for this property
+
     await prisma.wishlist.deleteMany({
       where: { propertyId: req.params.id },
     });
 
-    // Delete all inquiries for this property
+
     await prisma.inquiry.deleteMany({
       where: { propertyId: req.params.id },
     });
 
-    // Finally, delete the property itself
+
     await prisma.property.delete({ where: { id: req.params.id } });
 
     res.json({ message: "Property deleted successfully" });
@@ -197,7 +199,7 @@ exports.deleteProperty = async (req, res) => {
   }
 };
 
-// Get Owner Properties
+
 exports.getOwnerProperties = async (req, res) => {
   try {
     const properties = await prisma.property.findMany({

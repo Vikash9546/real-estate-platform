@@ -18,6 +18,7 @@ export default function AddProperty() {
     area: "",
     bedrooms: 1,
     bathrooms: 1,
+    googleLocation: "",
     imageUrl: "", // Added placeholder if supported by API or just for UI
   });
 
@@ -115,7 +116,22 @@ export default function AddProperty() {
                     value={form.address}
                     onChange={handleChange}
                     className={inputClass}
+                    required
                   />
+                </div>
+
+                <div>
+                  <label className={labelClass}>Google Maps Location URL</label>
+                  <input
+                    name="googleLocation"
+                    placeholder="Paste Google Maps link here"
+                    value={form.googleLocation}
+                    onChange={handleChange}
+                    className={inputClass}
+                    required
+                    type="url"
+                  />
+                  <p className="mt-1 text-xs text-slate-500">Go to Google Maps, find your property, click Share, and copy the link.</p>
                 </div>
 
                 <div>

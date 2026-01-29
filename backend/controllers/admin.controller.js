@@ -1,6 +1,5 @@
 const prisma = require("../config/db");
 
-// GET all users
 const getAllUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany({
@@ -12,7 +11,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// GET pending properties
 const getPendingProperties = async (req, res) => {
   try {
     const properties = await prisma.property.findMany({
@@ -25,7 +23,6 @@ const getPendingProperties = async (req, res) => {
   }
 };
 
-// APPROVE property
 const approveProperty = async (req, res) => {
   try {
     const { id } = req.params;
@@ -41,7 +38,6 @@ const approveProperty = async (req, res) => {
   }
 };
 
-// REJECT property
 const rejectProperty = async (req, res) => {
   try {
     const { id } = req.params;
@@ -57,7 +53,6 @@ const rejectProperty = async (req, res) => {
   }
 };
 
-// GET all properties (Admin)
 const getAllAdminProperties = async (req, res) => {
   try {
     const properties = await prisma.property.findMany({

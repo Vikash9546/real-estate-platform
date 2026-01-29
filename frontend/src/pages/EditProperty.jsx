@@ -20,6 +20,7 @@ export default function EditProperty() {
         area: "",
         bedrooms: 1,
         bathrooms: 1,
+        googleLocation: "",
     });
 
     useEffect(() => {
@@ -36,6 +37,7 @@ export default function EditProperty() {
                     area: p.area,
                     bedrooms: p.bedrooms,
                     bathrooms: p.bathrooms,
+                    googleLocation: p.googleLocation || "",
                 });
             } catch (err) {
                 alert("Failed to load property details");
@@ -134,7 +136,22 @@ export default function EditProperty() {
                                         value={form.address}
                                         onChange={handleChange}
                                         className={inputClass}
+                                        required
                                     />
+                                </div>
+
+                                <div>
+                                    <label className={labelClass}>Google Maps Location URL</label>
+                                    <input
+                                        name="googleLocation"
+                                        placeholder="Paste Google Maps link here"
+                                        value={form.googleLocation}
+                                        onChange={handleChange}
+                                        className={inputClass}
+                                        required
+                                        type="url"
+                                    />
+                                    <p className="mt-1 text-xs text-slate-500">Go to Google Maps, find your property, click Share, and copy the link.</p>
                                 </div>
 
                                 <div>

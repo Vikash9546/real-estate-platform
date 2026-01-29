@@ -11,10 +11,10 @@ const {
   getOwnerProperties,
 } = require("../controllers/property.controller");
 
-// Public
+
 router.get("/", getAllProperties);
 
-// Owner (keep this BEFORE /:id)
+
 router.get(
   "/owner/my",
   authMiddleware,
@@ -22,10 +22,10 @@ router.get(
   getOwnerProperties
 );
 
-// Public
+
 router.get("/:id", getPropertyById);
 
-// Owner CRUD
+
 router.post(
   "/",
   authMiddleware,

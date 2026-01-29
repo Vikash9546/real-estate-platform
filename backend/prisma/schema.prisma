@@ -55,6 +55,7 @@ model Property {
   type        String
   listingType String
   image       String[]
+  googleLocation String @default("")
 
   status      PropertyStatus @default(PENDING)
 
