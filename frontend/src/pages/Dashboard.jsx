@@ -57,7 +57,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Quick Links */}
-                <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <Link to="/owner/my-listings" className="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/50 text-center hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                         <span className="block text-sm font-medium text-slate-900 dark:text-white">My Listings</span>
                     </Link>
@@ -66,9 +66,6 @@ export default function Dashboard() {
                     </Link>
                     <Link to="/wishlist" className="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/50 text-center hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                         <span className="block text-sm font-medium text-slate-900 dark:text-white">Wishlist</span>
-                    </Link>
-                    <Link to="/chat" className="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/50 text-center hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
-                        <span className="block text-sm font-medium text-slate-900 dark:text-white">Messages</span>
                     </Link>
                 </div>
             </main>
