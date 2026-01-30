@@ -1,3 +1,10 @@
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Button from '../components/Button';
+import { getOwnerProperties } from '../api/propertyApi';
+import { getOwnerInquiries } from '../api/inquiryApi';
+import { getWishlist } from '../api/wishlistApi';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 export default function Dashboard() {
