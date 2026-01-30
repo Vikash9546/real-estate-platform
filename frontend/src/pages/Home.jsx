@@ -82,16 +82,12 @@ export default function Home() {
       furnished: "",
       sort: "newest",
     });
-    setTimeout(() => {
-      fetchProperties(1, data.limit);
-      resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 0);
+    setTimeout(() => fetchProperties(1, data.limit), 0);
   };
 
   const goToPage = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
     fetchProperties(newPage, data.limit);
-    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -126,10 +122,10 @@ export default function Home() {
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search by city, locality or property name..."
                 className="flex-1 bg-white/95 border-0 rounded-xl px-5 py-3 text-slate-900 placeholder:text-slate-500 focus:ring-2 focus:ring-primary-500 outline-none"
-                onKeyDown={(e) => e.key === 'Enter' && applyFilters()}
+                onKeyDown={(e) => e.key === 'Enter' && fetchProperties(1, data.limit)}
               />
               <Button
-                onClick={applyFilters}
+                onClick={() => fetchProperties(1, data.limit)}
                 variant="primary"
                 className="sm:w-auto w-full !px-8 !py-3 !text-base"
               >
