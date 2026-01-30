@@ -29,7 +29,7 @@ export default function Login() {
       if (userData.role === "ADMIN") {
         navigate("/admin/dashboard");
       } else {
-        navigate("/dashboard");
+        navigate("/");
       }
     } catch (err) {
       setError(err?.response?.data?.message || "Login failed");

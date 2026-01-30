@@ -93,7 +93,7 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <div className="hidden sm:flex flex-col items-end leading-tight">
+                <Link to="/dashboard" className="hidden sm:flex flex-col items-end leading-tight hover:opacity-80 transition-opacity">
                   <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                     {user.name}
                   </span>
@@ -102,7 +102,7 @@ export default function Navbar() {
                       ADMIN
                     </span>
                   )}
-                </div>
+                </Link>
 
                 <Button
                   variant="outline"
