@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import FiltersAside from "../components/FiltersAside";
 import PropertyCard from "../components/PropertyCard";
@@ -8,6 +8,7 @@ import { getAllProperties } from "../api/propertyApi";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const resultsRef = useRef(null);
 
   const [data, setData] = useState({
     total: 0,
@@ -66,7 +67,10 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const applyFilters = () => fetchProperties(1, data.limit);
+  const applyFilters = () => {
+    fetchProperties(1, data.limit);
+    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const clearFilters = () => {
     setSearchText("");
@@ -78,12 +82,16 @@ export default function Home() {
       furnished: "",
       sort: "newest",
     });
-    setTimeout(() => fetchProperties(1, data.limit), 0);
+    setTimeout(() => {
+      fetchProperties(1, data.limit);
+      resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
   };
 
   const goToPage = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
     fetchProperties(newPage, data.limit);
+    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -118,10 +126,10 @@ export default function Home() {
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search by city, locality or property name..."
                 className="flex-1 bg-white/95 border-0 rounded-xl px-5 py-3 text-slate-900 placeholder:text-slate-500 focus:ring-2 focus:ring-primary-500 outline-none"
-                onKeyDown={(e) => e.key === 'Enter' && fetchProperties(1, data.limit)}
+                onKeyDown={(e) => e.key === 'Enter' && applyFilters()}
               />
               <Button
-                onClick={() => fetchProperties(1, data.limit)}
+                onClick={applyFilters}
                 variant="primary"
                 className="sm:w-auto w-full !px-8 !py-3 !text-base"
               >
@@ -159,7 +167,7 @@ export default function Home() {
 
           <main className="lg:col-span-9">
             {/* Top Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div ref={resultsRef} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 scroll-mt-24">
               <div>
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                   Latest Listings
