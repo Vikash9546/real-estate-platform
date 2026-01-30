@@ -39,10 +39,12 @@ export default function AdminDashboard() {
     totalCities: [...new Set(allProperties.map(p => p.city))].length
   };
 
-  const typeData = [
-    { name: 'Rent', value: allProperties.filter(p => p.listingType === 'RENT').length },
-    { name: 'Sale', value: allProperties.filter(p => p.listingType === 'SALE').length }
-  ];
+  const typeData = Object.entries(
+    allProperties.reduce((acc, p) => {
+      acc[p.type] = (acc[p.type] || 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
 
   const cityData = Object.entries(
     allProperties.reduce((acc, p) => {
@@ -86,7 +88,7 @@ export default function AdminDashboard() {
           <div className="grid lg:grid-cols-3 gap-8 mb-10">
             {/* Charts */}
             <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
-              <h3 className="font-bold text-slate-900 dark:text-white mb-6">Listing Types</h3>
+              <h3 className="font-bold text-slate-900 dark:text-white mb-6">Property Types</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
