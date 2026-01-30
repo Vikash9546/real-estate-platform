@@ -204,6 +204,11 @@ exports.getOwnerProperties = async (req, res) => {
   try {
     const properties = await prisma.property.findMany({
       where: { ownerId: req.user.id },
+      include: {
+        _count: {
+          select: { inquiries: true }
+        }
+      },
       orderBy: { createdAt: "desc" },
     });
 

@@ -28,36 +28,47 @@ export default function PropertyCard({ property }) {
     }
   };
 
+  const isNew = new Date(property.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
   const imageUrl =
+    property.image?.[0] ||
     property.imageUrl ||
     "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
 
   return (
-    <div className="group relative rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-sm hover:shadow-xl hover:shadow-primary-500/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+    <div className="group relative rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-sm hover:shadow-2xl hover:shadow-primary-500/10 hover:-translate-y-2 transition-all duration-500 overflow-hidden flex flex-col h-full">
       <Link to={`/property/${property.id}`} className="relative overflow-hidden w-full pt-[66%]">
         <img
           src={imageUrl}
           alt={property.title}
-          className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute top-3 left-3">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-white/90 backdrop-blur-md text-slate-800 shadow-sm">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+        <div className="absolute top-3 left-3 flex gap-2">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/90 backdrop-blur-md text-slate-800 shadow-sm">
             {property.city || "Unknown City"}
           </span>
+          {isNew && (
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500 text-white shadow-sm">
+              New
+            </span>
+          )}
         </div>
 
         {/* Status Badge */}
         <div className="absolute top-3 right-3 flex gap-2">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold bg-primary-600/90 backdrop-blur-md text-white shadow-sm">
+          <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider backdrop-blur-md text-white shadow-sm ${property.status === 'APPROVED' ? 'bg-primary-600/90' : 'bg-amber-500/90'
+            }`}>
             {property.status || "LIVE"}
           </span>
         </div>
 
-        {/* Wishlist Button - Absolute positioned specifically for this card */}
+        {/* Wishlist Button */}
         <button
           onClick={handleAddToWishlist}
           disabled={adding}
-          className="absolute bottom-3 right-3 p-2 rounded-full bg-white/90 text-slate-400 hover:text-red-500 hover:bg-white shadow-sm transition-all z-10"
+          className="absolute bottom-3 right-3 p-2.5 rounded-full bg-white/95 text-slate-400 hover:text-red-500 hover:bg-white shadow-lg transition-all z-10 scale-90 group-hover:scale-100 duration-300"
           title="Add to Wishlist"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -66,40 +77,55 @@ export default function PropertyCard({ property }) {
         </button>
       </Link>
 
-      <div className="p-5 flex flex-col flex-1">
+      <div className="p-6 flex flex-col flex-1">
         <div className="flex-1">
-          <h3 className="font-bold text-lg text-slate-900 dark:text-white line-clamp-1 mb-1 group-hover:text-primary-600 transition-colors">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-tighter text-primary-600 dark:text-primary-400">
+              {property.type} • {property.listingType}
+            </span>
+            <span className="text-[10px] font-medium text-slate-400">
+              {new Date(property.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+          <h3 className="font-bold text-xl text-slate-900 dark:text-white line-clamp-1 mb-1 group-hover:text-primary-600 transition-colors duration-300">
             {property.title}
           </h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-1 mb-4">
+          <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-1 mb-5 flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
             {property.address || "No address provided"}
           </p>
 
-          <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-300 mb-4">
-            <span className="flex items-center gap-1">
-              <span className="text-lg">🛏</span> {property.bedrooms || 0} Beds
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="text-lg">🛁</span> {property.bathrooms || 0} Baths
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="text-lg">📏</span> {property.area || 1200} sqft
-            </span>
+          <div className="grid grid-cols-3 gap-2 py-4 border-y border-slate-50 dark:border-slate-900 mb-5">
+            <div className="text-center">
+              <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tight">Beds</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-white">{property.bedrooms || 0}</p>
+            </div>
+            <div className="text-center border-x border-slate-50 dark:border-slate-900">
+              <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tight">Baths</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-white">{property.bathrooms || 0}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tight">Sqft</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-white">{property.area || 1200}</p>
+            </div>
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between mt-auto">
+        <div className="flex items-center justify-between mt-auto">
           <div>
-            <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">Price</p>
-            <p className="text-xl font-bold text-slate-900 dark:text-white">
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Price</p>
+            <p className="text-2xl font-black text-slate-900 dark:text-white">
               ₹{Number(property.price).toLocaleString()}
-              <span className="text-sm font-normal text-slate-500">/mo</span>
+              <span className="text-xs font-normal text-slate-500 lowercase ml-0.5">/mo</span>
             </p>
           </div>
 
           <Link to={`/property/${property.id}`}>
-            <Button variant="primary" className="!rounded-lg !px-4 !py-2 text-sm">
-              Details
+            <Button variant="primary" className="!rounded-xl !px-6 !py-2.5 text-sm font-bold shadow-lg shadow-primary-500/30">
+              View
             </Button>
           </Link>
         </div>

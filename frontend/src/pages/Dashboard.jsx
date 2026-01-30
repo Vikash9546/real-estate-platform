@@ -1,21 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
+import { getOwnerProperties } from "../api/propertyApi";
+import { getOwnerInquiries } from "../api/inquiryApi";
+import { getWishlist } from "../api/wishlistApi";
 
 export default function Dashboard() {
+    const [stats, setStats] = useState({
+        listings: 0,
+        inquiries: 0,
+        wishlist: 0,
+        loading: true
+    });
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const [listingsRes, inquiriesRes, wishlistRes] = await Promise.all([
+                    getOwnerProperties(),
+                    getOwnerInquiries(),
+                    getWishlist()
+                ]);
+                setStats({
+                    listings: listingsRes.data.length,
+                    inquiries: inquiriesRes.data.length,
+                    wishlist: wishlistRes.data.length,
+                    loading: false
+                });
+            } catch (err) {
+                console.error("Error fetching stats:", err);
+                setStats(prev => ({ ...prev, loading: false }));
+            }
+        };
+        fetchStats();
+    }, []);
+
+    const StatCard = ({ title, value, icon, color }) => (
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+            <div className={`w-12 h-12 rounded-xl ${color} flex items-center justify-center text-2xl`}>
+                {icon}
+            </div>
+            <div>
+                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{title}</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                    {stats.loading ? "..." : value}
+                </p>
+            </div>
+        </div>
+    );
+
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 sm:px-0">
             <Navbar />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white sm:text-5xl">
-                        Welcome to Your Portal
-                    </h1>
-                    <p className="mt-4 text-xl text-slate-600 dark:text-slate-400">
-                        What would you like to do today?
-                    </p>
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white sm:text-5xl">
+                            Welcome to Your Portal
+                        </h1>
+                        <p className="mt-4 text-xl text-slate-600 dark:text-slate-400">
+                            What would you like to do today?
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full md:w-auto">
+                        <StatCard title="My Listings" value={stats.listings} icon="🏠" color="bg-blue-100 dark:bg-blue-900/30 text-blue-600" />
+                        <StatCard title="Inquiries" value={stats.inquiries} icon="📩" color="bg-amber-100 dark:bg-amber-900/30 text-amber-600" />
+                        <StatCard title="Saved" value={stats.wishlist} icon="❤️" color="bg-rose-100 dark:bg-rose-900/30 text-rose-600" />
+                    </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
