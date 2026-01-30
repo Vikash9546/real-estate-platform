@@ -14,6 +14,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import EditProperty from "./pages/EditProperty";
 import OwnerInquiries from "./pages/OwnerInquiries";
 import Chat from "./pages/Chat";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
   return (
@@ -31,7 +32,7 @@ export default function App() {
 
         <Route path="/wishlist" element={<Wishlist />} />
 
-        <Route path="/owner/dashboard" element={<OwnerDashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/owner/add-property" element={<AddProperty />} />
         <Route path="/owner/my-listings" element={<MyListings />} />
         <Route path="/owner/inquiries" element={<OwnerInquiries />} />

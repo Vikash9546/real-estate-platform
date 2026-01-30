@@ -18,7 +18,7 @@ router.get("/", getAllProperties);
 router.get(
   "/owner/my",
   authMiddleware,
-  roleMiddleware(["OWNER", "ADMIN"]),
+  roleMiddleware(["USER", "OWNER", "ADMIN"]),
   getOwnerProperties
 );
 
@@ -29,21 +29,21 @@ router.get("/:id", getPropertyById);
 router.post(
   "/",
   authMiddleware,
-  roleMiddleware(["OWNER", "ADMIN"]),
+  roleMiddleware(["USER", "OWNER", "ADMIN"]),
   createProperty
 );
 
 router.put(
   "/:id",
   authMiddleware,
-  roleMiddleware(["OWNER", "ADMIN"]),
+  roleMiddleware(["USER", "OWNER", "ADMIN"]),
   updateProperty
 );
 
 router.delete(
   "/:id",
   authMiddleware,
-  roleMiddleware(["OWNER", "ADMIN"]),
+  roleMiddleware(["USER", "OWNER", "ADMIN"]),
   deleteProperty
 );
 

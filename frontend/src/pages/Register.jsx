@@ -97,26 +97,6 @@ export default function Register() {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Account Type
-              </label>
-              <select
-                name="role"
-                value={form.role}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-                required
-              >
-                <option value="USER">User - Browse and rent properties</option>
-                <option value="OWNER">Owner - List and manage properties</option>
-              </select>
-              <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                {form.role === "USER" && "Browse properties, save favorites, and contact owners"}
-                {form.role === "OWNER" && "List your properties and manage rental inquiries"}
-              </p>
-            </div>
-
             <Button
               type="submit"
               variant="primary"

@@ -61,16 +61,12 @@ export default function Navbar() {
             <NavLink to="/">Home</NavLink>
             <NavLink to="/wishlist">Wishlist</NavLink>
 
-            {(user?.role === "OWNER" || user?.role === "ADMIN") && (
-              <NavLink to="/owner/add-property">Add Property</NavLink>
-            )}
-
-            {user?.role === "OWNER" && (
-              <NavLink to="/owner/my-listings">My Listings</NavLink>
-            )}
-
-            {(user?.role === "OWNER" || user?.role === "ADMIN") && (
-              <NavLink to="/owner/inquiries">Inquiries</NavLink>
+            {user && (
+              <>
+                <NavLink to="/owner/add-property">Add Property</NavLink>
+                <NavLink to="/owner/my-listings">My Listings</NavLink>
+                <NavLink to="/owner/inquiries">Inquiries</NavLink>
+              </>
             )}
 
             {user?.role === "ADMIN" && (
@@ -101,9 +97,11 @@ export default function Navbar() {
                   <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                     {user.name}
                   </span>
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-primary-600 dark:text-primary-400">
-                    {user.role}
-                  </span>
+                  {user.role === "ADMIN" && (
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-primary-600 dark:text-primary-400">
+                      ADMIN
+                    </span>
+                  )}
                 </div>
 
                 <Button

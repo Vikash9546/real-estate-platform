@@ -28,10 +28,8 @@ export default function Login() {
       // Redirect based on user role
       if (userData.role === "ADMIN") {
         navigate("/admin/dashboard");
-      } else if (userData.role === "OWNER") {
-        navigate("/owner/my-listings");
       } else {
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (err) {
       setError(err?.response?.data?.message || "Login failed");
