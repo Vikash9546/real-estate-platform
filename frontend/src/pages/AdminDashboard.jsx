@@ -1,5 +1,11 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from "../components/Navbar";
+import RoleRoute from "../components/RoleRoute";
+import Button from "../components/Button";
+import { getAllUsers, getPendingProperties, getAllAdminProperties, approveProperty, rejectProperty } from "../api/adminApi";
+import { deleteProperty } from "../api/propertyApi";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { getAllUsers } from "../api/adminApi";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -31,6 +37,34 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleApprove = async (id) => {
+    try {
+      await approveProperty(id);
+      fetchData();
+    } catch (err) {
+      alert("Failed to approve property");
+    }
+  };
+
+  const handleReject = async (id) => {
+    try {
+      await rejectProperty(id);
+      fetchData();
+    } catch (err) {
+      alert("Failed to reject property");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this property?")) return;
+    try {
+      await deleteProperty(id);
+      fetchData();
+    } catch (err) {
+      alert("Failed to delete property");
+    }
+  };
 
   const stats = {
     totalUsers: users.length,
