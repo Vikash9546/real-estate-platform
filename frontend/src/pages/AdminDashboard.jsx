@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import RoleRoute from "../components/RoleRoute";
-import Button from "../components/Button";
-import {
-  approveProperty,
-  getPendingProperties,
-  getAllAdminProperties,
-  rejectProperty,
-} from "../api/adminApi";
-import { deleteProperty } from "../api/propertyApi"; // Import delete
-import { useNavigate } from "react-router-dom";
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { getAllUsers } from "../api/adminApi";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [pending, setPending] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("pending");
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,12 +13,14 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [pendingRes, allRes] = await Promise.all([
+      const [pendingRes, allRes, usersRes] = await Promise.all([
         getPendingProperties(),
         getAllAdminProperties(),
+        getAllUsers(),
       ]);
       setPending(pendingRes.data);
       setAllProperties(allRes.data);
+      setUsers(usersRes.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -39,35 +32,37 @@ export default function AdminDashboard() {
     fetchData();
   }, []);
 
-  const handleApprove = async (id) => {
-    if (!window.confirm("Approve this property?")) return;
-    try {
-      await approveProperty(id);
-      fetchData();
-    } catch (err) {
-      alert("Failed to approve");
-    }
+  const stats = {
+    totalUsers: users.length,
+    totalProperties: allProperties.length,
+    pendingApprovals: pending.length,
+    totalCities: [...new Set(allProperties.map(p => p.city))].length
   };
 
-  const handleReject = async (id) => {
-    if (!window.confirm("Reject this property?")) return;
-    try {
-      await rejectProperty(id);
-      fetchData();
-    } catch (err) {
-      alert("Failed to reject");
-    }
-  };
+  const typeData = [
+    { name: 'Rent', value: allProperties.filter(p => p.listingType === 'RENT').length },
+    { name: 'Sale', value: allProperties.filter(p => p.listingType === 'SALE').length }
+  ];
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Permanently delete this property? This cannot be undone.")) return;
-    try {
-      await deleteProperty(id);
-      fetchData();
-    } catch (err) {
-      alert("Failed to delete property");
-    }
-  };
+  const cityData = Object.entries(
+    allProperties.reduce((acc, p) => {
+      acc[p.city] = (acc[p.city] || 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value })).slice(0, 5);
+
+  const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444'];
+
+  const AdminStatCard = ({ title, value, icon, sub }) => (
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md">
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-2xl">{icon}</span>
+        <span className="text-xs font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-full">{sub}</span>
+      </div>
+      <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{title}</p>
+      <p className="text-3xl font-black text-slate-900 dark:text-white mt-1">{value}</p>
+    </div>
+  );
 
   return (
     <RoleRoute roles={["ADMIN"]}>
@@ -75,26 +70,67 @@ export default function AdminDashboard() {
         <Navbar />
 
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          <header className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
-            <p className="text-slate-500 dark:text-slate-400 mt-2">Manage properties and platform settings</p>
+          <header className="mb-10">
+            <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Admin Console</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">Platform-wide overview and management</p>
           </header>
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-            <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                {activeTab === "pending" ? "Pending Approvals" : "All Properties"}
+          {/* Stats Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <AdminStatCard title="Total Users" value={stats.totalUsers} icon="👥" sub="+5 this week" />
+            <AdminStatCard title="Total Properties" value={stats.totalProperties} icon="🏢" sub="+12 total" />
+            <AdminStatCard title="Pending" value={stats.pendingApprovals} icon="⏳" sub="Requires Action" />
+            <AdminStatCard title="Unique Cities" value={stats.totalCities} icon="📍" sub="Active Regions" />
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 mb-10">
+            {/* Charts */}
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+              <h3 className="font-bold text-slate-900 dark:text-white mb-6">Listing Types</h3>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={typeData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
+                      {typeData.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+              <h3 className="font-bold text-slate-900 dark:text-white mb-6">Top Cities by Listings</h3>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={cityData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <Tooltip cursor={{ fill: 'transparent' }} />
+                    <Bar dataKey="value" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={40} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="p-8 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                {activeTab === "pending" ? "Awaiting Verification" : "Inventory Management"}
               </h2>
-              <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+              <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
                 <button
                   onClick={() => setActiveTab("pending")}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === "pending" ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white" : "text-slate-500"}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === "pending" ? "bg-white dark:bg-slate-700 shadow-lg text-primary-600 dark:text-white" : "text-slate-500"}`}
                 >
-                  Pending
+                  Pending ({pending.length})
                 </button>
                 <button
                   onClick={() => setActiveTab("all")}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === "all" ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white" : "text-slate-500"}`}
+                  className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === "all" ? "bg-white dark:bg-slate-700 shadow-lg text-primary-600 dark:text-white" : "text-slate-500"}`}
                 >
                   All Properties
                 </button>
@@ -102,28 +138,36 @@ export default function AdminDashboard() {
             </div>
 
             {/* Search Bar */}
-            <div className="p-4 border-b border-slate-200 dark:border-slate-800">
-              <input
-                type="text"
-                placeholder="Search by title, city, or ID..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all"
-              />
+            <div className="px-8 py-4 bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+                <input
+                  type="text"
+                  placeholder="Search properties..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all shadow-sm"
+                />
+              </div>
             </div>
 
             {loading ? (
-              <div className="p-8 text-center text-slate-500">Loading properties...</div>
+              <div className="p-20 text-center">
+                <div className="animate-spin w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-slate-500 font-medium tracking-wide">Assembling dashboard data...</p>
+              </div>
             ) : (activeTab === "pending" ? pending : allProperties).filter(p =>
               p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
               p.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
               p.id.toLowerCase().includes(searchQuery.toLowerCase())
             ).length === 0 ? (
-              <div className="p-12 text-center text-slate-500">
-                <p>No properties found matching "{searchQuery}".</p>
+              <div className="p-20 text-center text-slate-500">
+                <div className="text-5xl mb-4">📭</div>
+                <p className="text-lg font-medium">No results found for "{searchQuery}"</p>
+                <p className="mt-1">Try adjusting your filters or search terms</p>
               </div>
             ) : (
-              <div className="divide-y divide-slate-200 dark:divide-slate-800">
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
                 {(activeTab === "pending" ? pending : allProperties)
                   .filter(p =>
                     p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -131,11 +175,25 @@ export default function AdminDashboard() {
                     p.id.toLowerCase().includes(searchQuery.toLowerCase())
                   )
                   .map((p) => (
-                    <div key={p.id} className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                      <div>
-                        <h4 className="font-bold text-slate-900 dark:text-white text-lg">{p.title}</h4>
-                        <p className="text-sm text-slate-500">{p.city} • ₹{p.price}</p>
-                        <p className="text-xs text-slate-400 mt-1">Status: <span className={`font-semibold ${p.status === 'APPROVED' ? 'text-emerald-500' : p.status === 'REJECTED' ? 'text-red-500' : 'text-amber-500'}`}>{p.status}</span> • ID: {p.id}</p>
+                    <div key={p.id} className="p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-slate-50 dark:hover:bg-slate-800/20 transition-all group">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-3xl overflow-hidden shadow-inner">
+                          {p.image?.[0] ? <img src={p.image[0]} className="w-full h-full object-cover" /> : '🏢'}
+                        </div>
+                        <div>
+                          <h4 className="font-black text-slate-900 dark:text-white text-xl group-hover:text-primary-600 transition-colors uppercase tracking-tight">{p.title}</h4>
+                          <div className="flex items-center gap-3 mt-1">
+                            <span className="text-sm font-bold text-primary-500">{p.city}</span>
+                            <span className="text-slate-300">•</span>
+                            <span className="text-sm font-black text-slate-900 dark:text-white">₹{p.price.toLocaleString()}</span>
+                          </div>
+                          <div className="flex items-center gap-4 mt-2">
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${p.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700' : p.status === 'REJECTED' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700'}`}>
+                              {p.status}
+                            </span>
+                            <span className="text-[10px] font-medium text-slate-400 font-mono tracking-tighter">ID: {p.id.slice(-8)}</span>
+                          </div>
+                        </div>
                       </div>
 
                       <div className="flex items-center gap-3">
@@ -144,16 +202,16 @@ export default function AdminDashboard() {
                             <Button
                               variant="primary"
                               onClick={() => handleApprove(p.id)}
-                              className="!bg-emerald-600 hover:!bg-emerald-700 !shadow-none"
+                              className="!px-8 !py-3 !rounded-xl !bg-emerald-600 hover:!bg-emerald-700 shadow-lg shadow-emerald-500/20 font-black tracking-widest text-xs"
                             >
-                              Approve
+                              APPROVE
                             </Button>
                             <Button
                               variant="outline"
                               onClick={() => handleReject(p.id)}
-                              className="!text-red-600 !border-red-200 hover:!bg-red-50"
+                              className="!px-8 !py-3 !rounded-xl !text-rose-600 !border-rose-200 hover:!bg-rose-50 font-black tracking-widest text-xs"
                             >
-                              Reject
+                              REJECT
                             </Button>
                           </>
                         ) : (
@@ -161,16 +219,16 @@ export default function AdminDashboard() {
                             <Button
                               variant="outline"
                               onClick={() => navigate(`/property/edit/${p.id}`)}
-                              className="!px-3 !py-1.5"
+                              className="!px-6 !py-2.5 !rounded-xl !border-slate-200 dark:!border-slate-700 !text-slate-600 dark:!text-slate-300 font-bold text-xs"
                             >
-                              Edit
+                              EDIT
                             </Button>
                             <Button
                               variant="outline"
                               onClick={() => handleDelete(p.id)}
-                              className="!px-3 !py-1.5 !text-red-600 !border-red-200 hover:!bg-red-50"
+                              className="!px-6 !py-2.5 !rounded-xl !text-rose-600 !border-rose-200 hover:!bg-rose-50 font-bold text-xs"
                             >
-                              Delete
+                              DELETE
                             </Button>
                           </>
                         )}

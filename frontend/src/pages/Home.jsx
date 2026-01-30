@@ -132,6 +132,30 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Market Stats Bar */}
+      <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center group">
+              <p className="text-3xl font-black text-primary-600 dark:text-primary-400 mb-1 group-hover:scale-110 transition-transform">500+</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Verified Listings</p>
+            </div>
+            <div className="text-center group border-l border-slate-100 dark:border-slate-800">
+              <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mb-1 group-hover:scale-110 transition-transform">100%</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Secure Payments</p>
+            </div>
+            <div className="text-center group border-l border-slate-100 dark:border-slate-800">
+              <p className="text-3xl font-black text-amber-600 dark:text-amber-400 mb-1 group-hover:scale-110 transition-transform">24/7</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Support Availability</p>
+            </div>
+            <div className="text-center group border-l border-slate-100 dark:border-slate-800">
+              <p className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mb-1 group-hover:scale-110 transition-transform">20+</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Major Cities</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <FiltersAside
