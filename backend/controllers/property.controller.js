@@ -14,10 +14,27 @@ exports.createProperty = async (req, res) => {
       bathrooms,
       furnished,
       type,
-      listingType,
-      images,
+      image,
       googleLocation,
     } = req.body;
+
+    const defaultImages = {
+      apartment: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      villa: "https://images.unsplash.com/photo-1580587767d02-3f677ee59b1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      studio: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      house: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      luxury: "https://images.unsplash.com/photo-1600585154340-be6191ecdb50?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+    };
+
+    let propertyImages = image || [];
+    if (propertyImages.length === 0) {
+      const lowerTitle = title.toLowerCase();
+      if (lowerTitle.includes('apartment') || lowerTitle.includes('flat')) propertyImages = [defaultImages.apartment];
+      else if (lowerTitle.includes('villa')) propertyImages = [defaultImages.villa];
+      else if (lowerTitle.includes('studio')) propertyImages = [defaultImages.studio];
+      else if (lowerTitle.includes('luxury') || lowerTitle.includes('penthouse')) propertyImages = [defaultImages.luxury];
+      else propertyImages = [defaultImages.house];
+    }
 
     const property = await prisma.property.create({
       data: {
@@ -31,8 +48,8 @@ exports.createProperty = async (req, res) => {
         bathrooms: Number(bathrooms),
         furnished: furnished || false,
         type: type || "APARTMENT",
-        listingType: listingType || "RENT",
-        image: images || [],
+        listingType: "RENT", // Strictly "RENT" only
+        image: propertyImages,
         googleLocation: googleLocation || "",
         ownerId: req.user.id,
         status: "PENDING",
@@ -158,7 +175,10 @@ exports.updateProperty = async (req, res) => {
 
     const updated = await prisma.property.update({
       where: { id: req.params.id },
-      data: req.body,
+      data: {
+        ...req.body,
+        listingType: "RENT"
+      },
     });
 
     res.json({ message: "Property updated", updated });
