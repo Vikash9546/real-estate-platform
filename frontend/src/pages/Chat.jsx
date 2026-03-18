@@ -3,8 +3,11 @@ import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { getConversation, sendMessage } from "../api/messageApi";
 import Button from "../components/Button";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 export default function Chat() {
+    const { user } = useContext(AuthContext);
     const { otherUserId } = useParams();
     const [searchParams] = useSearchParams();
     const inquiryId = searchParams.get("inquiryId");
@@ -16,7 +19,7 @@ export default function Chat() {
     const [otherUser, setOtherUser] = useState(null);
     const messagesEndRef = useRef(null);
 
-    const currentUserId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage on login
+    const currentUserId = user?.id; // Using user from AuthContext
 
     const fetchMessages = async () => {
         try {

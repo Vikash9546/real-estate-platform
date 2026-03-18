@@ -15,6 +15,7 @@ import EditProperty from "./pages/EditProperty";
 import OwnerInquiries from "./pages/OwnerInquiries";
 import Chat from "./pages/Chat";
 import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
@@ -32,14 +33,14 @@ export default function App() {
 
         <Route path="/wishlist" element={<Wishlist />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/owner/add-property" element={<AddProperty />} />
-        <Route path="/owner/my-listings" element={<MyListings />} />
-        <Route path="/owner/inquiries" element={<OwnerInquiries />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/owner/add-property" element={<ProtectedRoute><AddProperty /></ProtectedRoute>} />
+        <Route path="/owner/my-listings" element={<ProtectedRoute><MyListings /></ProtectedRoute>} />
+        <Route path="/owner/inquiries" element={<ProtectedRoute><OwnerInquiries /></ProtectedRoute>} />
 
-        <Route path="/chat/:otherUserId" element={<Chat />} />
+        <Route path="/chat/:otherUserId" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
 
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

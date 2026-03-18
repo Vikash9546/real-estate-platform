@@ -18,6 +18,22 @@ api.interceptors.request.use(
   }
 );
 
+// Add a response interceptor
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Clear local storage on unauthorized error
+      localStorage.removeItem("token");
+      // Use window.location to force a reload and redirect to login
+      if (!window.location.pathname.includes("/login")) {
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // ✅ Get all properties (with filters/pagination)
 export const getAllProperties = async (params) => {
   const res = await api.get("/properties", { params });
