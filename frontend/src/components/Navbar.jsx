@@ -69,9 +69,7 @@ export default function Navbar() {
               </>
             )}
 
-            {user?.role === "ADMIN" && (
-              <NavLink to="/admin/dashboard">Admin</NavLink>
-            )}
+
           </nav>
 
           {/* Right Section */}
@@ -97,11 +95,6 @@ export default function Navbar() {
                   <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                     {user.name}
                   </span>
-                  {user.role === "ADMIN" && (
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-primary-600 dark:text-primary-400">
-                      ADMIN
-                    </span>
-                  )}
                 </Link>
 
                 <Button

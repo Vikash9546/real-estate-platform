@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import RoleRoute from "../components/RoleRoute";
 import Button from "../components/Button";
 import { deleteProperty, getOwnerProperties } from "../api/propertyApi";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +45,7 @@ export default function MyListings() {
   };
 
   return (
-    <RoleRoute roles={["OWNER", "ADMIN"]}>
+    <>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <Navbar />
 
@@ -192,6 +191,6 @@ export default function MyListings() {
           )}
         </div>
       </div>
-    </RoleRoute>
+    </>
   );
 }

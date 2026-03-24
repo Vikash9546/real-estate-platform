@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import RoleRoute from "../components/RoleRoute";
 import { getOwnerInquiries, updateInquiryStatus } from "../api/inquiryApi";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
@@ -35,7 +34,7 @@ export default function OwnerInquiries() {
     };
 
     return (
-        <RoleRoute roles={["OWNER", "ADMIN"]}>
+        <>
             <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
                 <Navbar />
                 <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -95,6 +94,6 @@ export default function OwnerInquiries() {
                     )}
                 </div>
             </div>
-        </RoleRoute>
+        </>
     );
 }

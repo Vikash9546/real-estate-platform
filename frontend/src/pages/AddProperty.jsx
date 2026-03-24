@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import RoleRoute from "../components/RoleRoute";
 import Button from "../components/Button";
 import { createProperty } from "../api/propertyApi";
 import { useNavigate } from "react-router-dom";
@@ -56,7 +55,7 @@ export default function AddProperty() {
   const labelClass = "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1";
 
   return (
-    <RoleRoute roles={["OWNER", "ADMIN"]}>
+    <>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
         <Navbar />
 
@@ -206,6 +205,6 @@ export default function AddProperty() {
           </div>
         </div>
       </div>
-    </RoleRoute>
+    </>
   );
 }

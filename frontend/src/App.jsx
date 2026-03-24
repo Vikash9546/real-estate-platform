@@ -8,8 +8,7 @@ import Wishlist from "./pages/Wishlist";
 import OwnerDashboard from "./pages/OwnerDashboard";
 import AddProperty from "./pages/AddProperty";
 import MyListings from "./pages/MyListings";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminLogin from "./pages/AdminLogin";
+
 import ForgotPassword from "./pages/ForgotPassword";
 import EditProperty from "./pages/EditProperty";
 import OwnerInquiries from "./pages/OwnerInquiries";
@@ -26,7 +25,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/admin" element={<AdminLogin />} />
+
 
         <Route path="/property/:id" element={<PropertyDetails />} />
         <Route path="/property/edit/:id" element={<EditProperty />} />
@@ -40,7 +39,7 @@ export default function App() {
 
         <Route path="/chat/:otherUserId" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
 
-        <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+
       </Routes>
     </BrowserRouter>
   );

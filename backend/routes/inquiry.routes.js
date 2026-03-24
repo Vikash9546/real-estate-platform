@@ -1,7 +1,6 @@
 const router = require("express").Router();
 
 const authMiddleware = require("../middlewares/auth.middleware");
-const roleMiddleware = require("../middlewares/role.middleware");
 
 const {
   createInquiry,
@@ -13,7 +12,6 @@ const {
 router.post(
   "/:propertyId",
   authMiddleware,
-  roleMiddleware(["USER"]),
   createInquiry
 );
 
@@ -21,7 +19,6 @@ router.post(
 router.get(
   "/owner/all",
   authMiddleware,
-  roleMiddleware(["OWNER", "ADMIN"]),
   getOwnerInquiries
 );
 
@@ -29,7 +26,6 @@ router.get(
 router.put(
   "/:id/status",
   authMiddleware,
-  roleMiddleware(["OWNER", "ADMIN"]),
   updateInquiryStatus
 );
 
