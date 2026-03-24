@@ -52,7 +52,7 @@ exports.createProperty = async (req, res) => {
         image: propertyImages,
         googleLocation: googleLocation || "",
         ownerId: req.user.id,
-        status: "PENDING",
+        status: "APPROVED",
       },
     });
 
@@ -83,7 +83,7 @@ exports.getAllProperties = async (req, res) => {
 
 
 
-    const filters = { status: "APPROVED" };
+    const filters = {};
 
     if (search) {
       filters.OR = [
