@@ -4,6 +4,8 @@ const prisma = require("../config/db");
 // Map of userId -> socketId for tracking online users
 const onlineUsers = new Map();
 
+let ioInstance = null;
+
 function initSocket(httpServer) {
   const io = new Server(httpServer, {
     cors: {
@@ -11,6 +13,8 @@ function initSocket(httpServer) {
       methods: ["GET", "POST"],
     },
   });
+
+  ioInstance = io;
 
   io.on("connection", (socket) => {
     console.log("🟢 User connected:", socket.id);
@@ -95,4 +99,13 @@ function initSocket(httpServer) {
   return io;
 }
 
-module.exports = { initSocket };
+// Helper to emit events from outside socket handlers (e.g., from controllers)
+function getIO() {
+  return ioInstance;
+}
+
+function getOnlineUsers() {
+  return onlineUsers;
+}
+
+module.exports = { initSocket, getIO, getOnlineUsers };

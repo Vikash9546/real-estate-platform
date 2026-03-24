@@ -77,7 +77,7 @@ export default function PropertyDetails() {
           />
           <div className="absolute top-4 right-4">
             <span className="px-4 py-2 rounded-full bg-white/90 backdrop-blur text-slate-900 font-bold shadow-sm">
-              {property.status || "For Rent"}
+              For Rent
             </span>
           </div>
         </div>
@@ -220,6 +220,7 @@ export default function PropertyDetails() {
         onClose={() => setIsContactModalOpen(false)}
         propertyId={id}
         propertyTitle={property.title}
+        ownerId={property.ownerId}
       />
     </div>
   );

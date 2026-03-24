@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Button from "./Button";
 import { createInquiry } from "../api/inquiryApi";
+import { useNavigate } from "react-router-dom";
 
-export default function ContactModal({ isOpen, onClose, propertyId, propertyTitle }) {
+export default function ContactModal({ isOpen, onClose, propertyId, propertyTitle, ownerId }) {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     if (!isOpen) return null;
 
@@ -14,12 +16,16 @@ export default function ContactModal({ isOpen, onClose, propertyId, propertyTitl
 
         try {
             setLoading(true);
-            await createInquiry(propertyId, { message });
-            alert("Inquiry sent directly to the owner!");
+            const res = await createInquiry(propertyId, { message });
+            const inquiryId = res.data?.inquiry?.id;
             setMessage("");
             onClose();
+            // Navigate directly to chat with the property owner
+            if (ownerId) {
+                navigate(`/chat/${ownerId}${inquiryId ? `?inquiryId=${inquiryId}` : ""}`);
+            }
         } catch (err) {
-            alert(err?.response?.data?.message || "Failed to send inquiry");
+            alert(err?.response?.data?.message || "Failed to send inquiry. Please login first.");
         } finally {
             setLoading(false);
         }
@@ -60,6 +66,10 @@ export default function ContactModal({ isOpen, onClose, propertyId, propertyTitl
                         ></textarea>
                     </div>
 
+                    <p className="text-xs text-slate-400 mb-4 flex items-center gap-1">
+                        💬 After sending, you'll be taken to the chat to continue the conversation.
+                    </p>
+
                     <div className="flex gap-3">
                         <Button
                             type="button"
@@ -75,7 +85,7 @@ export default function ContactModal({ isOpen, onClose, propertyId, propertyTitl
                             className="flex-1"
                             disabled={loading}
                         >
-                            {loading ? "Sending..." : "Send Message"}
+                            {loading ? "Sending..." : "Send & Start Chat"}
                         </Button>
                     </div>
                 </form>
