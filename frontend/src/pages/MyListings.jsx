@@ -121,16 +121,6 @@ export default function MyListings() {
 
                         {/* Status & Date */}
                         <div className="flex items-center gap-3">
-                          <span
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${property.status === "APPROVED"
-                              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                              : property.status === "PENDING"
-                                ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
-                                : "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400"
-                              } shadow-sm`}
-                          >
-                            {property.status}
-                          </span>
                           <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
                             Added {new Date(property.createdAt).toLocaleDateString()}
                           </span>

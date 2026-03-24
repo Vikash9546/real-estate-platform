@@ -56,13 +56,7 @@ export default function PropertyCard({ property }) {
           )}
         </div>
 
-        {/* Status Badge */}
-        <div className="absolute top-3 right-3 flex gap-2">
-          <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider backdrop-blur-md text-white shadow-sm ${property.status === 'APPROVED' ? 'bg-primary-600/90' : 'bg-amber-500/90'
-            }`}>
-            {property.status || "LIVE"}
-          </span>
-        </div>
+
 
         {/* Wishlist Button */}
         <button
