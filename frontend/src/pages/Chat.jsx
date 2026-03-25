@@ -61,9 +61,14 @@ export default function Chat() {
         if (!socket) return;
 
         const handleReceiveMessage = (message) => {
+            const msgSender = String(message.senderId);
+            const msgReceiver = String(message.receiverId);
+            const me = String(currentUserId);
+            const other = String(otherUserId);
+
             const isRelevant =
-                (message.senderId === otherUserId && message.receiverId === currentUserId) ||
-                (message.senderId === currentUserId && message.receiverId === otherUserId);
+                (msgSender === other && msgReceiver === me) ||
+                (msgSender === me && msgReceiver === other);
             if (isRelevant) {
                 setMessages((prev) => {
                     if (prev.some((m) => m.id === message.id)) return prev;
@@ -78,10 +83,10 @@ export default function Chat() {
         };
 
         const handleUserTyping = ({ senderId }) => {
-            if (senderId === otherUserId) setIsTyping(true);
+            if (String(senderId) === String(otherUserId)) setIsTyping(true);
         };
         const handleUserStopTyping = ({ senderId }) => {
-            if (senderId === otherUserId) setIsTyping(false);
+            if (String(senderId) === String(otherUserId)) setIsTyping(false);
         };
 
         socket.on("receive_message", handleReceiveMessage);
