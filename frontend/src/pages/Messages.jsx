@@ -39,7 +39,7 @@ export default function Messages() {
                 const otherUser =
                     message.senderId === user?.id ? message.receiver : message.sender;
 
-                const filtered = prev.filter((c) => c.user.id !== otherUserId);
+                const filtered = prev.filter((c) => c.user?.id !== otherUserId);
                 return [
                     {
                         user: otherUser || { id: otherUserId, name: "User" },
@@ -116,7 +116,7 @@ export default function Messages() {
                     </div>
                 ) : (
                     <div className="divide-y divide-[#e9edef]">
-                        {chats.map((chat) => {
+                        {chats.filter((chat) => chat.user?.id).map((chat) => {
                             const isOnline = onlineUsers.includes(chat.user.id);
                             const isMySentMessage = chat.lastMessageSenderId === user?.id;
 
