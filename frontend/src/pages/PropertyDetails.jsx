@@ -1,16 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { useParams, useNavigate } from "react-router-dom";
 import { getPropertyById } from "../api/propertyApi";
 import { addToWishlist } from "../api/wishlistApi";
 import Button from "../components/Button";
 import ContactModal from "../components/ContactModal";
-import { AuthContext } from "../context/AuthContext";
 
 export default function PropertyDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -171,26 +169,21 @@ export default function PropertyDetails() {
               </div>
 
               <div className="space-y-4">
-                {user?.id !== property.ownerId && (
+                <Button
+                  variant="primary"
+                  className="w-full !py-4 !text-lg !rounded-2xl shadow-xl shadow-primary-500/30 font-bold"
+                  onClick={() => setIsContactModalOpen(true)}
+                >
+                  Contact Owner
+                </Button>
+                <div className="grid grid-cols-2 gap-3">
                   <Button
-                    variant="primary"
-                    className="w-full !py-4 !text-lg !rounded-2xl shadow-xl shadow-primary-500/30 font-bold"
-                    onClick={() => setIsContactModalOpen(true)}
+                    variant="outline"
+                    className="w-full !py-3 !text-sm !rounded-xl"
+                    onClick={() => navigate(`/chat/${property.ownerId}`)}
                   >
-                    Contact Owner
+                    💬 Chat
                   </Button>
-                )}
-                
-                <div className={`grid ${user?.id !== property.ownerId ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
-                  {user?.id !== property.ownerId && (
-                    <Button
-                      variant="outline"
-                      className="w-full !py-3 !text-sm !rounded-xl"
-                      onClick={() => navigate(`/chat/${property.ownerId}`)}
-                    >
-                      💬 Chat
-                    </Button>
-                  )}
                   <Button
                     variant="outline"
                     className="w-full !py-3 !text-sm !rounded-xl"
