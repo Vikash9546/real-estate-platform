@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Navbar from "../components/Navbar";
 import { registerUser } from "../api/authApi";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "../components/Button";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { fetchMe } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -23,9 +25,16 @@ export default function Register() {
     setLoading(true);
     setError("");
     try {
-      await registerUser(form);
-      // Optional: Auto login or redirect to login with success message
-      navigate("/login");
+      const res = await registerUser(form);
+      const token = res.data?.token;
+      
+      if (token) {
+          localStorage.setItem("token", token);
+          await fetchMe(); // Fetch and set user in context
+          navigate("/dashboard");
+      } else {
+          navigate("/login");
+      }
     } catch (err) {
       setError(err?.response?.data?.message || "Registration failed");
     } finally {
