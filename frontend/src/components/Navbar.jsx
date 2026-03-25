@@ -66,6 +66,7 @@ export default function Navbar() {
                 <NavLink to="/owner/add-property">Add Property</NavLink>
                 <NavLink to="/owner/my-listings">My Listings</NavLink>
                 <NavLink to="/owner/inquiries">Inquiries</NavLink>
+                <NavLink to="/messages">Messages</NavLink>
               </>
             )}
 

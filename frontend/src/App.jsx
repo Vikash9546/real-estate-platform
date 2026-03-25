@@ -13,6 +13,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import EditProperty from "./pages/EditProperty";
 import OwnerInquiries from "./pages/OwnerInquiries";
 import Chat from "./pages/Chat";
+import Messages from "./pages/Messages";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/owner/inquiries" element={<ProtectedRoute><OwnerInquiries /></ProtectedRoute>} />
 
         <Route path="/chat/:otherUserId" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+        <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
 
 
       </Routes>

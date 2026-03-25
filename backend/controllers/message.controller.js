@@ -76,23 +76,38 @@ exports.getChatList = async (req, res) => {
     try {
         const userId = req.user.id;
 
-        // Get unique users that the current user has chatted with
-        const sentMessages = await prisma.message.findMany({
-            where: { senderId: userId },
-            select: { receiverId: true, receiver: { select: { id: true, name: true, email: true } } },
+        // Get all messages involving this user
+        const allMessages = await prisma.message.findMany({
+            where: {
+                OR: [
+                    { senderId: userId },
+                    { receiverId: userId },
+                ],
+            },
+            include: {
+                sender: { select: { id: true, name: true, email: true } },
+                receiver: { select: { id: true, name: true, email: true } },
+            },
+            orderBy: { createdAt: "desc" },
         });
 
-        const receivedMessages = await prisma.message.findMany({
-            where: { receiverId: userId },
-            select: { senderId: true, sender: { select: { id: true, name: true, email: true } } },
+        // Group by the other user and pick the latest message
+        const chatMap = new Map();
+
+        allMessages.forEach((msg) => {
+            const otherUserId = msg.senderId === userId ? msg.receiverId : msg.senderId;
+            if (!chatMap.has(otherUserId)) {
+                const otherUser = msg.senderId === userId ? msg.receiver : msg.sender;
+                chatMap.set(otherUserId, {
+                    user: otherUser,
+                    lastMessage: msg.content,
+                    lastMessageTime: msg.createdAt,
+                    lastMessageSenderId: msg.senderId,
+                });
+            }
         });
 
-        const chatUsersMap = new Map();
-
-        sentMessages.forEach(m => chatUsersMap.set(m.receiverId, m.receiver));
-        receivedMessages.forEach(m => chatUsersMap.set(m.senderId, m.sender));
-
-        const chatList = Array.from(chatUsersMap.values());
+        const chatList = Array.from(chatMap.values());
 
         res.json(chatList);
     } catch (error) {
