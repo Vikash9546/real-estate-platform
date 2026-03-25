@@ -177,9 +177,14 @@ export default function Chat() {
                             </div>
                         ) : (
                             messages.map((msg, index) => {
+                                // Test Mode: If you are chatting with yourself, alternate the bubbles so you can test the UI
+                                const isSelfTest = String(currentUserId) === String(otherUserId);
+                                
                                 // 1. Check if the message was sent by the current user (me)
-                                const isMine = String(msg.senderId) === String(currentUserId);
-
+                                const isMine = isSelfTest 
+                                    ? (index % 2 === 0) // Alternate side in testing mode
+                                    : String(msg.senderId) === String(currentUserId);
+                                
                                 // 2. Conditionally align using self-end for "me" and self-start for "other"
                                 return (
                                     <div 
