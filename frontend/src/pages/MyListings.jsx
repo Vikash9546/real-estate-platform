@@ -9,6 +9,7 @@ export default function MyListings() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(null);
+  const [propertyToDelete, setPropertyToDelete] = useState(null);
 
   const fetchListings = async () => {
     try {
@@ -17,7 +18,6 @@ export default function MyListings() {
       setListings(res.data);
     } catch (err) {
       console.log(err?.response?.data || err.message);
-      alert("Failed to load listings");
     } finally {
       setLoading(false);
     }
@@ -27,20 +27,23 @@ export default function MyListings() {
     fetchListings();
   }, []);
 
-  const handleDelete = async (id, title) => {
-    if (!window.confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) return;
+  const handleDeleteClick = (id, title) => {
+    setPropertyToDelete({ id, title });
+  };
+
+  const confirmDelete = async () => {
+    if (!propertyToDelete) return;
 
     try {
-      setDeleteLoading(id);
-      await deleteProperty(id);
-      // Remove from UI immediately for better UX
-      setListings(listings.filter(p => p.id !== id));
-      alert("Property deleted successfully!");
+      setDeleteLoading(propertyToDelete.id);
+      await deleteProperty(propertyToDelete.id);
+      setListings(listings.filter(p => p.id !== propertyToDelete.id));
     } catch (err) {
       console.error(err);
       alert(err?.response?.data?.message || "Failed to delete property");
     } finally {
       setDeleteLoading(null);
+      setPropertyToDelete(null);
     }
   };
 
@@ -138,7 +141,7 @@ export default function MyListings() {
                         </Button>
                         <Button
                           variant="danger"
-                          onClick={() => handleDelete(property.id, property.title)}
+                          onClick={() => handleDeleteClick(property.id, property.title)}
                           disabled={deleteLoading === property.id}
                           className="!py-2 !text-sm"
                         >
@@ -181,6 +184,36 @@ export default function MyListings() {
           )}
         </div>
       </div>
+
+      {/* Custom Confirmation Modal */}
+      {propertyToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 w-full max-w-md p-6 overflow-hidden">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Delete Property</h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              Are you sure you want to delete <span className="font-semibold">"{propertyToDelete.title}"</span>? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setPropertyToDelete(null)}
+                className="!px-6"
+                disabled={deleteLoading === propertyToDelete.id}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={confirmDelete}
+                className="!px-6 !bg-red-600 hover:!bg-red-700 !shadow-red-500/30"
+                disabled={deleteLoading === propertyToDelete.id}
+              >
+                {deleteLoading === propertyToDelete.id ? "Deleting..." : "Delete"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

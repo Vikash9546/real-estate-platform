@@ -46,14 +46,22 @@ export default function Messages() {
         return () => socket.off("receive_message", handleNewMessage);
     }, [socket, user]);
 
-    const handleDeleteConversation = async (e, otherUserId, name) => {
+    const [conversationToDelete, setConversationToDelete] = useState(null);
+
+    const handleDeleteClick = (e, otherUserId, name) => {
         e.stopPropagation();
-        if (!confirm(`Delete entire conversation with ${name}?`)) return;
+        setConversationToDelete({ otherUserId, name });
+    };
+
+    const confirmDelete = async () => {
+        if (!conversationToDelete) return;
         try {
-            await deleteConversation(otherUserId);
-            setChats((prev) => prev.filter((c) => c.user?.id !== otherUserId));
+            await deleteConversation(conversationToDelete.otherUserId);
+            setChats((prev) => prev.filter((c) => c.user?.id !== conversationToDelete.otherUserId));
         } catch (err) {
             alert("Failed to delete conversation");
+        } finally {
+            setConversationToDelete(null);
         }
     };
 
@@ -114,7 +122,7 @@ export default function Messages() {
 
                                     {/* Delete button */}
                                     <button
-                                        onClick={(e) => handleDeleteConversation(e, chat.user.id, chat.user.name)}
+                                        onClick={(e) => handleDeleteClick(e, chat.user.id, chat.user.name)}
                                         className="flex-shrink-0 p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-all"
                                         title="Delete conversation"
                                     >
@@ -128,6 +136,32 @@ export default function Messages() {
                     </div>
                 )}
             </div>
+
+            {/* Custom Confirmation Modal */}
+            {conversationToDelete && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6 overflow-hidden">
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Delete Conversation</h3>
+                        <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm">
+                            Are you sure you want to delete the entire conversation with <span className="font-semibold text-slate-800 dark:text-slate-200">"{conversationToDelete.name}"</span>? This action cannot be undone.
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => setConversationToDelete(null)}
+                                className="px-5 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/30 transition-all"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

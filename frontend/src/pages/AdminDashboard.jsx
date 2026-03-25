@@ -38,6 +38,8 @@ export default function AdminDashboard() {
     fetchData();
   }, []);
 
+  const [propertyToDelete, setPropertyToDelete] = useState(null);
+
   const handleApprove = async (id) => {
     try {
       await approveProperty(id);
@@ -56,13 +58,19 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this property?")) return;
+  const handleDeleteClick = (p) => {
+    setPropertyToDelete(p);
+  };
+
+  const confirmDelete = async () => {
+    if (!propertyToDelete) return;
     try {
-      await deleteProperty(id);
+      await deleteProperty(propertyToDelete.id);
       fetchData();
     } catch (err) {
       alert("Failed to delete property");
+    } finally {
+      setPropertyToDelete(null);
     }
   };
 
@@ -261,7 +269,7 @@ export default function AdminDashboard() {
                             </Button>
                             <Button
                               variant="outline"
-                              onClick={() => handleDelete(p.id)}
+                              onClick={() => handleDeleteClick(p)}
                               className="!px-6 !py-2.5 !rounded-xl !text-rose-600 !border-rose-200 hover:!bg-rose-50 font-bold text-xs"
                             >
                               DELETE
@@ -275,6 +283,32 @@ export default function AdminDashboard() {
             )}
           </div>
         </div>
+
+        {/* Custom Confirmation Modal */}
+        {propertyToDelete && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6 overflow-hidden">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Delete Property</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm">
+                Are you sure you want to delete <span className="font-semibold text-slate-800 dark:text-slate-200">"{propertyToDelete.title}"</span>? This action cannot be undone.
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setPropertyToDelete(null)}
+                  className="px-5 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/30 transition-all"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </RoleRoute>
   );
