@@ -11,3 +11,5 @@ export const getInquiryChat = (inquiryId) =>
 export const getChatList = () => api.get("/messages/list");
 
 export const deleteMessage = (id) => api.delete(`/messages/${id}`);
+
+export const deleteConversation = (otherUserId) => api.delete(`/messages/conversation/${otherUserId}`);

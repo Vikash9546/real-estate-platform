@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { getChatList } from "../api/messageApi";
+import { getChatList, deleteConversation } from "../api/messageApi";
 import { AuthContext } from "../context/AuthContext";
 import { SocketContext } from "../context/SocketContext";
 
@@ -46,6 +46,17 @@ export default function Messages() {
         return () => socket.off("receive_message", handleNewMessage);
     }, [socket, user]);
 
+    const handleDeleteConversation = async (e, otherUserId, name) => {
+        e.stopPropagation();
+        if (!confirm(`Delete entire conversation with ${name}?`)) return;
+        try {
+            await deleteConversation(otherUserId);
+            setChats((prev) => prev.filter((c) => c.user?.id !== otherUserId));
+        } catch (err) {
+            alert("Failed to delete conversation");
+        }
+    };
+
     const formatTime = (dateStr) => {
         if (!dateStr) return "";
         const date = new Date(dateStr);
@@ -74,28 +85,44 @@ export default function Messages() {
                         {chats.filter((c) => c.user?.id).map((chat) => {
                             const isOnline = onlineUsers.includes(chat.user.id);
                             return (
-                                <button
+                                <div
                                     key={chat.user.id}
-                                    onClick={() => navigate(`/chat/${chat.user.id}`)}
-                                    className="w-full flex items-center gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left"
+                                    className="flex items-center gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
                                 >
-                                    <div className="relative">
-                                        <div className="w-11 h-11 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold text-lg">
-                                            {chat.user.name?.[0]?.toUpperCase() || "?"}
+                                    {/* Clickable area */}
+                                    <button
+                                        onClick={() => navigate(`/chat/${chat.user.id}`)}
+                                        className="flex items-center gap-4 flex-1 min-w-0 text-left"
+                                    >
+                                        <div className="relative flex-shrink-0">
+                                            <div className="w-11 h-11 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold text-lg">
+                                                {chat.user.name?.[0]?.toUpperCase() || "?"}
+                                            </div>
+                                            {isOnline && (
+                                                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-slate-900" />
+                                            )}
                                         </div>
-                                        {isOnline && (
-                                            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-slate-900" />
-                                        )}
-                                    </div>
 
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center justify-between">
-                                            <h4 className="font-semibold text-slate-900 dark:text-white truncate">{chat.user.name}</h4>
-                                            <span className="text-xs text-slate-400 ml-2 flex-shrink-0">{formatTime(chat.lastMessageTime)}</span>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center justify-between">
+                                                <h4 className="font-semibold text-slate-900 dark:text-white truncate">{chat.user.name}</h4>
+                                                <span className="text-xs text-slate-400 ml-2 flex-shrink-0">{formatTime(chat.lastMessageTime)}</span>
+                                            </div>
+                                            <p className="text-sm text-slate-500 truncate mt-0.5">{chat.lastMessage || "Start a conversation"}</p>
                                         </div>
-                                        <p className="text-sm text-slate-500 truncate mt-0.5">{chat.lastMessage || "Start a conversation"}</p>
-                                    </div>
-                                </button>
+                                    </button>
+
+                                    {/* Delete button */}
+                                    <button
+                                        onClick={(e) => handleDeleteConversation(e, chat.user.id, chat.user.name)}
+                                        className="flex-shrink-0 p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-all"
+                                        title="Delete conversation"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
                             );
                         })}
                     </div>

@@ -154,3 +154,23 @@ exports.deleteMessage = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+exports.deleteConversation = async (req, res) => {
+    try {
+        const { otherUserId } = req.params;
+        const userId = req.user.id;
+
+        await prisma.message.deleteMany({
+            where: {
+                OR: [
+                    { senderId: userId, receiverId: otherUserId },
+                    { senderId: otherUserId, receiverId: userId },
+                ],
+            },
+        });
+
+        res.json({ message: "Conversation deleted" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
