@@ -169,6 +169,11 @@ export default function Chat() {
 
                     {/* Messages */}
                     <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-3 bg-slate-50/30 dark:bg-slate-900/30">
+                        {String(currentUserId) === String(otherUserId) && (
+                            <div className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 p-3 rounded-lg text-sm text-center border border-yellow-200 dark:border-yellow-800/50 mb-4 self-center max-w-md">
+                                <strong>Testing Mode:</strong> You are chatting with yourself. Since you are both the sender and receiver, all messages you send will appear on the right side.
+                            </div>
+                        )}
                         {loading ? (
                             <div className="text-center text-slate-500 py-12 align-self-center self-center w-full">Loading...</div>
                         ) : messages.length === 0 ? (
