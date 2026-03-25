@@ -5,11 +5,13 @@ const {
     getConversation,
     getInquiryChat,
     getChatList,
+    deleteMessage,
 } = require("../controllers/message.controller");
 
 router.post("/", authMiddleware, sendMessage);
 router.get("/list", authMiddleware, getChatList);
 router.get("/conversation/:otherUserId", authMiddleware, getConversation);
 router.get("/inquiry/:inquiryId", authMiddleware, getInquiryChat);
+router.delete("/:id", authMiddleware, deleteMessage);
 
 module.exports = router;

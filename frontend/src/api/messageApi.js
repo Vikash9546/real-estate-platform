@@ -9,3 +9,5 @@ export const getInquiryChat = (inquiryId) =>
     api.get(`/messages/inquiry/${inquiryId}`);
 
 export const getChatList = () => api.get("/messages/list");
+
+export const deleteMessage = (id) => api.delete(`/messages/${id}`);

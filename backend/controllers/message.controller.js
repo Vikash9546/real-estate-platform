@@ -114,3 +114,43 @@ exports.getChatList = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+exports.deleteMessage = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        const message = await prisma.message.findUnique({ where: { id } });
+        if (!message) return res.status(404).json({ message: "Message not found" });
+
+        if (message.senderId !== userId) {
+            return res.status(403).json({ message: "You can only delete your own messages" });
+        }
+
+        await prisma.message.delete({ where: { id } });
+
+        // Emit real-time deletion to the receiver
+        const { getIO, getOnlineUsers } = require("../src/socket");
+        try {
+            const io = getIO();
+            const onlineUsers = getOnlineUsers();
+            if (io) {
+                const receiverSocketId = onlineUsers.get(message.receiverId);
+                if (receiverSocketId) {
+                    io.to(receiverSocketId).emit("message_deleted", { messageId: id });
+                }
+                // Also notify sender (other tabs)
+                const senderSocketId = onlineUsers.get(message.senderId);
+                if (senderSocketId) {
+                    io.to(senderSocketId).emit("message_deleted", { messageId: id });
+                }
+            }
+        } catch (socketErr) {
+            console.error("Socket emit error:", socketErr.message);
+        }
+
+        res.json({ message: "Message deleted" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

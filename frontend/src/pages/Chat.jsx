@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext, useCallback } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { getConversation } from "../api/messageApi";
+import { getConversation, deleteMessage } from "../api/messageApi";
 import Button from "../components/Button";
 import { AuthContext } from "../context/AuthContext";
 import { SocketContext } from "../context/SocketContext";
@@ -19,6 +19,7 @@ export default function Chat() {
     const [loading, setLoading] = useState(true);
     const [otherUser, setOtherUser] = useState(null);
     const [isTyping, setIsTyping] = useState(false);
+    const [menuOpenId, setMenuOpenId] = useState(null);
     const messagesEndRef = useRef(null);
     const typingTimeoutRef = useRef(null);
 
@@ -49,6 +50,13 @@ export default function Chat() {
     useEffect(() => { fetchMessages(); }, [fetchMessages]);
     useEffect(scrollToBottom, [messages, isTyping]);
 
+    // Close menu on click outside
+    useEffect(() => {
+        const handleClick = () => setMenuOpenId(null);
+        document.addEventListener("click", handleClick);
+        return () => document.removeEventListener("click", handleClick);
+    }, []);
+
     useEffect(() => {
         if (!socket) return;
 
@@ -65,6 +73,10 @@ export default function Chat() {
             }
         };
 
+        const handleMessageDeleted = ({ messageId }) => {
+            setMessages((prev) => prev.filter((m) => m.id !== messageId));
+        };
+
         const handleUserTyping = ({ senderId }) => {
             if (senderId === otherUserId) setIsTyping(true);
         };
@@ -73,11 +85,13 @@ export default function Chat() {
         };
 
         socket.on("receive_message", handleReceiveMessage);
+        socket.on("message_deleted", handleMessageDeleted);
         socket.on("user_typing", handleUserTyping);
         socket.on("user_stop_typing", handleUserStopTyping);
 
         return () => {
             socket.off("receive_message", handleReceiveMessage);
+            socket.off("message_deleted", handleMessageDeleted);
             socket.off("user_typing", handleUserTyping);
             socket.off("user_stop_typing", handleUserStopTyping);
         };
@@ -106,6 +120,16 @@ export default function Chat() {
         socket.emit("stop_typing", { senderId: currentUserId, receiverId: otherUserId });
         if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
         setNewMessage("");
+    };
+
+    const handleDelete = async (msgId) => {
+        try {
+            await deleteMessage(msgId);
+            setMessages((prev) => prev.filter((m) => m.id !== msgId));
+        } catch (err) {
+            alert(err?.response?.data?.message || "Failed to delete");
+        }
+        setMenuOpenId(null);
     };
 
     return (
@@ -150,15 +174,48 @@ export default function Chat() {
                             messages.map((msg) => {
                                 const isMine = msg.senderId !== otherUserId;
                                 return (
-                                    <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
-                                        <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl ${isMine
-                                            ? "bg-primary-600 text-white rounded-br-sm"
-                                            : "bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-bl-sm border border-slate-100 dark:border-slate-700"
-                                            }`}>
-                                            <p className="text-sm">{msg.content}</p>
-                                            <p className={`text-[10px] mt-1 ${isMine ? "text-primary-200" : "text-slate-400"}`}>
-                                                {new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                                            </p>
+                                    <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"} group`}>
+                                        <div className="relative max-w-[75%]">
+                                            <div className={`px-4 py-2.5 rounded-2xl ${isMine
+                                                ? "bg-primary-600 text-white rounded-br-sm"
+                                                : "bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-bl-sm border border-slate-100 dark:border-slate-700"
+                                                }`}>
+                                                <p className="text-sm">{msg.content}</p>
+                                                <p className={`text-[10px] mt-1 ${isMine ? "text-primary-200" : "text-slate-400"}`}>
+                                                    {new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                                                </p>
+                                            </div>
+
+                                            {/* Delete button - only on own messages */}
+                                            {isMine && (
+                                                <div className="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setMenuOpenId(menuOpenId === msg.id ? null : msg.id);
+                                                        }}
+                                                        className="p-1 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-red-500 transition-colors"
+                                                        title="Delete message"
+                                                    >
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+
+                                                    {/* Confirm popup */}
+                                                    {menuOpenId === msg.id && (
+                                                        <div className="absolute right-0 top-8 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 py-1 z-20 w-32"
+                                                            onClick={(e) => e.stopPropagation()}>
+                                                            <button
+                                                                onClick={() => handleDelete(msg.id)}
+                                                                className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex items-center gap-2"
+                                                            >
+                                                                🗑 Delete
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 );
