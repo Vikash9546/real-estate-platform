@@ -176,30 +176,39 @@ export default function Chat() {
                                 <p className="text-slate-400">No messages yet. Say hello!</p>
                             </div>
                         ) : (
-                            messages.map((msg) => {
+                            messages.map((msg, index) => {
                                 const isMine = String(msg.senderId) === String(currentUserId);
+
+                                // Check if previous message was from the same sender to group avatars
+                                const isFirstInGroup = index === 0 || String(messages[index - 1].senderId) !== String(msg.senderId);
+
                                 return (
-                                    <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"} group`}>
-                                        <div className="relative max-w-[75%]">
-                                            <div className={`px-4 py-2.5 rounded-2xl ${isMine
-                                                ? "bg-primary-600 text-white rounded-br-sm"
-                                                : "bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-bl-sm border border-slate-100 dark:border-slate-700"
+                                    <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"} group mb-${isFirstInGroup ? '3' : '1'} items-end gap-2`}>
+                                        
+                                        {/* Avatar for receiver (only show for the first message in a group) */}
+                                        {!isMine && (
+                                            <div className={`w-8 h-8 rounded-full flex-shrink-0 ${isFirstInGroup ? 'bg-primary-500' : 'bg-transparent'} flex items-center justify-center text-white text-xs font-bold`}>
+                                                {isFirstInGroup && (otherUser?.name?.[0]?.toUpperCase() || "?")}
+                                            </div>
+                                        )}
+
+                                        <div className="relative max-w-[70%]">
+                                            <div className={`px-[18px] py-[10px] rounded-2xl shadow-sm text-[15px] ${isMine
+                                                ? "bg-[#66a3d9] text-white" 
+                                                : "bg-[#cce6ff] text-slate-800"
                                                 }`}>
-                                                <p className="text-sm">{msg.content}</p>
-                                                <p className={`text-[10px] mt-1 ${isMine ? "text-primary-200" : "text-slate-400"}`}>
-                                                    {new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                                                </p>
+                                                <p className="whitespace-pre-wrap">{msg.content}</p>
                                             </div>
 
                                             {/* Delete button - only on own messages */}
                                             {isMine && (
-                                                <div className="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="absolute -left-10 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                                     <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             setMenuOpenId(menuOpenId === msg.id ? null : msg.id);
                                                         }}
-                                                        className="p-1 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-red-500 transition-colors"
+                                                        className="p-1.5 bg-white shadow-sm rounded-full hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors"
                                                         title="Delete message"
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,13 +218,13 @@ export default function Chat() {
 
                                                     {/* Confirm popup */}
                                                     {menuOpenId === msg.id && (
-                                                        <div className="absolute right-0 top-8 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 py-1 z-20 w-32"
+                                                        <div className="absolute right-0 top-10 bg-white dark:bg-slate-800 rounded-lg shadow-xl py-1 w-28"
                                                             onClick={(e) => e.stopPropagation()}>
                                                             <button
                                                                 onClick={() => handleDelete(msg.id)}
-                                                                className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex items-center gap-2"
+                                                                className="w-full px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
                                                             >
-                                                                🗑 Delete
+                                                                Delete
                                                             </button>
                                                         </div>
                                                     )}
