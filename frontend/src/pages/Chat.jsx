@@ -172,7 +172,7 @@ export default function Chat() {
                             </div>
                         ) : (
                             messages.map((msg) => {
-                                const isMine = msg.senderId !== otherUserId;
+                                const isMine = String(msg.senderId) === String(currentUserId);
                                 return (
                                     <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"} group`}>
                                         <div className="relative max-w-[75%]">
