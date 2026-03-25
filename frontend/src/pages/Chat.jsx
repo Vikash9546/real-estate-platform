@@ -168,37 +168,40 @@ export default function Chat() {
                     </div>
 
                     {/* Messages */}
-                    <div className="flex-1 overflow-y-auto p-6 space-y-3 bg-slate-50/30 dark:bg-slate-900/30">
+                    <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-3 bg-slate-50/30 dark:bg-slate-900/30">
                         {loading ? (
-                            <div className="text-center text-slate-500 py-12">Loading...</div>
+                            <div className="text-center text-slate-500 py-12 align-self-center self-center w-full">Loading...</div>
                         ) : messages.length === 0 ? (
-                            <div className="text-center py-20">
+                            <div className="text-center py-20 self-center w-full">
                                 <p className="text-slate-400">No messages yet. Say hello!</p>
                             </div>
                         ) : (
                             messages.map((msg, index) => {
+                                // 1. Check if the message was sent by the current user (me)
                                 const isMine = String(msg.senderId) === String(currentUserId);
 
-                                // Check if previous message was from the same sender to group avatars
-                                const isFirstInGroup = index === 0 || String(messages[index - 1].senderId) !== String(msg.senderId);
-
+                                // 2. Conditionally align using self-end for "me" and self-start for "other"
                                 return (
-                                    <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"} group mb-${isFirstInGroup ? '3' : '1'} items-end gap-2`}>
-                                        
-                                        {/* Avatar for receiver (only show for the first message in a group) */}
-                                        {!isMine && (
-                                            <div className={`w-8 h-8 rounded-full flex-shrink-0 ${isFirstInGroup ? 'bg-primary-500' : 'bg-transparent'} flex items-center justify-center text-white text-xs font-bold`}>
-                                                {isFirstInGroup && (otherUser?.name?.[0]?.toUpperCase() || "?")}
-                                            </div>
+                                    <div 
+                                        key={msg.id} 
+                                        className={`group relative max-w-[75%] md:max-w-[60%] flex flex-col ${isMine ? "self-end items-end" : "self-start items-start"}`}
+                                    >
+                                        {/* Name header for receiver messages (optional clean look) */}
+                                        {!isMine && index === 0 && (
+                                            <span className="text-xs text-slate-500 ml-2 mb-1">{otherUser?.name || "Other"}</span>
                                         )}
 
-                                        <div className="relative max-w-[70%]">
-                                            <div className={`px-[18px] py-[10px] rounded-2xl shadow-sm text-[15px] ${isMine
-                                                ? "bg-[#66a3d9] text-white" 
-                                                : "bg-[#cce6ff] text-slate-800"
+                                        {/* 3. Conditional colors: Blue for sender, Gray for receiver */}
+                                        <div className={`px-4 py-2.5 rounded-2xl shadow-sm text-[15px] ${isMine
+                                                ? "bg-blue-500 text-white rounded-br-sm" 
+                                                : "bg-gray-200 dark:bg-slate-700 text-slate-800 dark:text-gray-100 rounded-bl-sm"
                                                 }`}>
                                                 <p className="whitespace-pre-wrap">{msg.content}</p>
-                                            </div>
+                                        </div>
+                                        
+                                        <span className="text-[10px] text-slate-400 mt-1 mx-1">
+                                            {new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                                        </span>
 
                                             {/* Delete button - only on own messages */}
                                             {isMine && (
@@ -230,7 +233,6 @@ export default function Chat() {
                                                     )}
                                                 </div>
                                             )}
-                                        </div>
                                     </div>
                                 );
                             })
