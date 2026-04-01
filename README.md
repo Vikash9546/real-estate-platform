@@ -22,7 +22,7 @@ graph TD
         F --> H[Socket.io Server]
         F --> I[JWT Auth]
         F --> J[Multer Storage]
-    <ctrl95>
+    end
 
     subgraph "Database & Storage"
         K[(MongoDB)]
