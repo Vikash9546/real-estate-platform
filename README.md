@@ -1,10 +1,10 @@
-# Real Estate Platform 🏠
+# Real Estate Platform
 
 A feature-rich, full-stack real estate platform designed to streamline the process of buying, selling, and renting properties. This platform provides a seamless experience for property owners to list their assets and for users to discover and inquire about dream homes or commercial spaces.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 The application follows a modern decoupled architecture with a React frontend and a Node.js/Express backend, utilizing MongoDB for data storage and Socket.io for real-time communication.
 
@@ -36,7 +36,7 @@ graph TD
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ### Backend (`/backend`)
 Contains the server-side logic, API endpoints, and database management.
@@ -62,34 +62,34 @@ The user interface built with React and styled with Tailwind CSS.
 
 ---
 
-## 🚀 Key Features & Functionality
+## Key Features & Functionality
 
-### 🔐 Authentication & Authorization
+### Authentication & Authorization
 - **Multi-Role System**: Support for `USER`, `OWNER`, and `ADMIN`.
 - **Secure Auth**: JWT-based authentication with password hashing using `bcrypt`.
 - **Profile Management**: Users can update their profiles and manage account settings.
 
-### 🏠 Property Management
+### Property Management
 - **Listings**: Owners can add, edit, and delete property listings with detailed info (price, area, city, amenities).
 - **Media Upload**: Support for uploading multiple property images using `multer`.
 - **Status Workflow**: Admin approval system for new listings to ensure quality.
 
-### 🔍 Search & Discovery
+### Search & Discovery
 - **Advanced Filtering**: Filter properties by type (Residential/Commercial), price range, city, and amenities.
 - **Wishlist**: Users can save properties to their personal wishlist for later viewing.
 
-### 💬 Communication System
+### Communication System
 - **Inquiry Handling**: Direct inquiry forms on property details pages.
 - **Real-time Chat**: Integrated messaging system powered by `Socket.io` for instant communication between buyers and owners.
 - **Notifications**: Email notifications for inquiries via `nodemailer`.
 
-### 🛠️ Admin Dashboard
+### Admin Dashboard
 - **Analytics**: Overview of total properties, users, and active inquiries.
 - **Moderation**: Approve or reject property listings and manage user accounts.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend:**
 - React 19 (Vite)
@@ -108,7 +108,7 @@ The user interface built with React and styled with Tailwind CSS.
 
 ---
 
-## 📥 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v18+)
