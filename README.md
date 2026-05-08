@@ -2,6 +2,7 @@
 
 A feature-rich, full-stack real estate platform designed to streamline the process of buying, selling, and renting properties. This platform provides a seamless experience for property owners to list their assets and for users to discover and inquire about dream homes or commercial spaces.
 
+Live: [Demo](https://real-estate-platform-hrfw.vercel.app/)
 ---
 
 ## Architecture
