@@ -98,6 +98,30 @@ export default function Home() {
     resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    if (totalPages <= 6) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      pageNumbers.push(1);
+      const start = Math.max(2, data.page - 1);
+      const end = Math.min(totalPages - 1, data.page + 1);
+      if (start > 2) {
+        pageNumbers.push("ellipsis-1");
+      }
+      for (let i = start; i <= end; i++) {
+        pageNumbers.push(i);
+      }
+      if (end < totalPages - 1) {
+        pageNumbers.push("ellipsis-2");
+      }
+      pageNumbers.push(totalPages);
+    }
+    return pageNumbers;
+  };
+
   const handleCategoryClick = (categoryName, typeValue) => {
     resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     fetchProperties(1, data.limit, "", typeValue);
@@ -536,21 +560,30 @@ export default function Home() {
                   <button
                     onClick={() => goToPage(data.page - 1)}
                     disabled={data.page === 1}
-                    className="px-5 py-2.5 rounded-full border border-[#E6C594]/30 text-xs uppercase tracking-wider text-[#1E140F] hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300"
+                    className="group flex items-center justify-center w-10 h-10 rounded-full border border-[#E6C594]/30 hover:border-[#1E140F] text-[#1E140F] hover:bg-white disabled:opacity-30 disabled:pointer-events-none transition-all duration-300"
+                    aria-label="Previous Page"
                   >
-                    Prev
+                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
                   </button>
 
                   <div className="flex items-center gap-1.5 bg-white rounded-full p-1.5 border border-[#E6C594]/20">
-                    {Array.from({ length: totalPages }).map((_, i) => {
-                      const p = i + 1;
+                    {getPageNumbers().map((p, idx) => {
+                      if (typeof p === "string" && p.startsWith("ellipsis")) {
+                        return (
+                          <span key={`ellipsis-${idx}`} className="w-9 h-9 flex items-center justify-center text-xs font-light text-[#807268] select-none">
+                            •••
+                          </span>
+                        );
+                      }
                       return (
                         <button
                           key={p}
                           onClick={() => goToPage(p)}
                           className={`w-9 h-9 rounded-full text-xs font-bold transition-all duration-300 ${data.page === p
-                            ? "bg-[#1E140F] text-white shadow-md shadow-[#1E140F]/10"
-                            : "text-[#807268] hover:bg-[#FAF8F5] hover:text-[#1E140F]"
+                            ? "bg-[#1E140F] text-white shadow-md shadow-[#1E140F]/15 scale-105"
+                            : "text-[#807268] hover:bg-[#FAF8F5] hover:text-[#1E140F] hover:scale-105"
                             }`}
                         >
                           {p}
@@ -562,9 +595,12 @@ export default function Home() {
                   <button
                     onClick={() => goToPage(data.page + 1)}
                     disabled={data.page === totalPages}
-                    className="px-5 py-2.5 rounded-full border border-[#E6C594]/30 text-xs uppercase tracking-wider text-[#1E140F] hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300"
+                    className="group flex items-center justify-center w-10 h-10 rounded-full border border-[#E6C594]/30 hover:border-[#1E140F] text-[#1E140F] hover:bg-white disabled:opacity-30 disabled:pointer-events-none transition-all duration-300"
+                    aria-label="Next Page"
                   >
-                    Next
+                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </button>
                 </div>
               )}
