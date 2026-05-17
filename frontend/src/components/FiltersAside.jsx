@@ -22,7 +22,7 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
 
   return (
     <aside className="lg:col-span-3">
-      <div className="lg:sticky lg:top-28 rounded-[28px] border border-[#E6C594]/20 bg-white shadow-sm p-6 space-y-6">
+      <div className="lg:sticky lg:top-40 lg:mt-20 rounded-[20px] border border-[#E6C594]/20 bg-white shadow-sm p-6 space-y-6">
         
         <div>
           <h2 className="text-2xl font-serif font-medium text-[#1E140F]">
