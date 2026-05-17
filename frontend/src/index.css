@@ -3,6 +3,11 @@
 @tailwind base;
 
 @layer base {
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     @apply antialiased text-[#2A1E17] bg-[#FAF8F5];
     font-family: 'Inter', sans-serif;
