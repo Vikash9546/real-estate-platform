@@ -1,33 +1,37 @@
-import Button from "./Button";
+import React from "react";
 
 export default function FiltersAside({ filters, setFilters, onApply, onClear }) {
   const handleChange = (e) => {
     setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const inputClasses = "mt-1 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all";
-  const labelClasses = "text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400";
+  const inputClasses = 
+    "mt-2 w-full rounded-full border border-[#E6C594]/30 bg-[#FDFBF9] px-4 py-2.5 text-xs text-[#1E140F] placeholder-[#A6978E] focus:outline-none focus:border-[#B39359] focus:ring-1 focus:ring-[#B39359] transition-all duration-300";
+  
+  const labelClasses = 
+    "text-[9px] font-bold uppercase tracking-[0.15em] text-[#807268]";
 
   return (
     <aside className="lg:col-span-3">
-      <div className="sticky top-24 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm p-6 space-y-6">
+      <div className="sticky top-28 rounded-[28px] border border-[#E6C594]/20 bg-white shadow-sm p-6 space-y-6">
+        
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-            Filters
+          <h2 className="text-2xl font-serif font-medium text-[#1E140F]">
+            Parameters
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Refine your property search
+          <p className="text-[11px] text-[#807268] font-light mt-1">
+            Refine your search parameters
           </p>
         </div>
 
         {/* City */}
         <div>
-          <label className={labelClasses}>City</label>
+          <label className={labelClasses}>City / Location</label>
           <input
             name="city"
             value={filters.city}
             onChange={handleChange}
-            placeholder="e.g. Pune"
+            placeholder="e.g. Jaipur"
             className={inputClasses}
           />
         </div>
@@ -53,7 +57,7 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
               type="number"
               value={filters.maxPrice}
               onChange={handleChange}
-              placeholder="50000"
+              placeholder="100000"
               className={inputClasses}
             />
           </div>
@@ -61,18 +65,18 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
 
         {/* Bedrooms */}
         <div>
-          <label className={labelClasses}>Bedrooms</label>
+          <label className={labelClasses}>Bedrooms / BHK</label>
           <select
             name="bedrooms"
             value={filters.bedrooms}
             onChange={handleChange}
-            className={inputClasses}
+            className={`${inputClasses} appearance-none cursor-pointer`}
           >
-            <option value="">Any</option>
-            <option value="1">1 BHK</option>
-            <option value="2">2 BHK</option>
-            <option value="3">3 BHK</option>
-            <option value="4">4+ BHK</option>
+            <option value="">Any Bedrooms</option>
+            <option value="1">1 Bed (1 BHK)</option>
+            <option value="2">2 Beds (2 BHK)</option>
+            <option value="3">3 Beds (3 BHK)</option>
+            <option value="4">4+ Beds (4+ BHK)</option>
           </select>
         </div>
 
@@ -83,11 +87,11 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
             name="furnished"
             value={filters.furnished}
             onChange={handleChange}
-            className={inputClasses}
+            className={`${inputClasses} appearance-none cursor-pointer`}
           >
             <option value="">Any</option>
-            <option value="true">Yes</option>
-            <option value="false">No</option>
+            <option value="true">Furnished</option>
+            <option value="false">Unfurnished</option>
           </select>
         </div>
 
@@ -98,7 +102,7 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
             name="sort"
             value={filters.sort}
             onChange={handleChange}
-            className={inputClasses}
+            className={`${inputClasses} appearance-none cursor-pointer`}
           >
             <option value="newest">Newest Listed</option>
             <option value="priceAsc">Price: Low to High</option>
@@ -108,21 +112,19 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
 
         {/* Buttons */}
         <div className="flex gap-3 pt-4">
-          <Button
+          <button
             onClick={onApply}
-            variant="primary"
-            className="flex-1"
+            className="flex-1 bg-[#1E140F] hover:bg-[#B39359] text-white rounded-full py-2.5 text-[10px] font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm"
           >
             Apply
-          </Button>
+          </button>
 
-          <Button
+          <button
             onClick={onClear}
-            variant="outline"
-            className="flex-1"
+            className="flex-1 border border-[#E6C594]/40 hover:border-[#1E140F] text-[#1E140F] rounded-full py-2.5 text-[10px] font-semibold uppercase tracking-wider hover:bg-[#FAF8F5] transition-all duration-300"
           >
             Reset
-          </Button>
+          </button>
         </div>
       </div>
     </aside>

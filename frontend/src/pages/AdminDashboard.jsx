@@ -95,7 +95,7 @@ export default function AdminDashboard() {
     }, {})
   ).map(([name, value]) => ({ name, value })).slice(0, 5);
 
-  const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444'];
+  const COLORS = ['#000000', '#10b981', '#f59e0b', '#ef4444'];
 
   const AdminStatCard = ({ title, value, icon, sub }) => (
     <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md">
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
                     <XAxis dataKey="name" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip cursor={{ fill: 'transparent' }} />
-                    <Bar dataKey="value" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={40} />
+                    <Bar dataKey="value" fill="#000000" radius={[4, 4, 0, 0]} barSize={40} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

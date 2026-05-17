@@ -5,6 +5,7 @@ import { getPropertyById } from "../api/propertyApi";
 import { addToWishlist } from "../api/wishlistApi";
 import Button from "../components/Button";
 import ContactModal from "../components/ContactModal";
+import Footer from "../components/Footer";
 
 export default function PropertyDetails() {
   const { id } = useParams();
@@ -61,7 +62,23 @@ export default function PropertyDetails() {
     </div>
   );
 
-  const imageUrl = property.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80";
+  const defaultImages = [
+    "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1628113426177-baae051ef40d?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&w=1600&q=80"
+  ];
+
+  const getSeededImage = (id = "") => {
+    const hash = String(id).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return defaultImages[hash % defaultImages.length];
+  };
+
+  const imageUrl = property.image?.[0] || property.imageUrl || getSeededImage(property.id || property.title);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -202,7 +219,7 @@ export default function PropertyDetails() {
                 </Button>
               </div>
 
-              <div className="p-6 rounded-2xl bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-100/50 dark:border-indigo-900/20">
+              <div className="p-6 rounded-2xl bg-slate-50/50 dark:bg-slate-900/10 border border-slate-100/50 dark:border-slate-900/20">
                 <h4 className="font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
                   <span className="text-xl">🛡️</span> Verified Property
                 </h4>
@@ -222,6 +239,8 @@ export default function PropertyDetails() {
         propertyTitle={property.title}
         ownerId={property.ownerId}
       />
+
+      <Footer />
     </div>
   );
 }

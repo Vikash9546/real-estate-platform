@@ -12,7 +12,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -23,14 +23,29 @@ export default function Navbar() {
     navigate("/login");
   };
 
+  const scrollToConsultation = (e) => {
+    e.preventDefault();
+    const contactSection = document.getElementById("consultation-form-section");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/#consultation-form-section");
+      setTimeout(() => {
+        document.getElementById("consultation-form-section")?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
+  };
+
   const isActive = (path) => location.pathname === path;
 
   const NavLink = ({ to, children }) => (
     <Link
       to={to}
-      className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${isActive(to)
-        ? "bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400"
-        : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+      className={`px-3 py-1.5 text-xs font-medium uppercase tracking-[0.15em] transition-all duration-300 ${isActive(to)
+        ? "text-[#E6C594] border-b border-[#E6C594]/80"
+        : scrolled 
+          ? "text-[#2A1E17] hover:text-[#B39359]" 
+          : "text-white/80 hover:text-white hover:scale-105"
         }`}
     >
       {children}
@@ -39,25 +54,28 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
-        ? "bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm"
-        : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+        ? "bg-white/95 dark:bg-[#1E140F]/95 backdrop-blur-xl border-b border-[#E6C594]/20 shadow-md py-3"
+        : "bg-gradient-to-b from-[#120B08]/80 to-transparent py-5"
         }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="flex items-center justify-between h-14">
+          
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold shadow-lg shadow-primary-500/30 transition-transform group-hover:scale-105">
-              R
-            </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600 dark:from-white dark:to-slate-300">
-              RealEstate
+          <Link to="/" className="flex flex-col items-start group">
+            <span className={`text-lg font-serif font-light tracking-[0.25em] uppercase leading-none transition-colors duration-300 ${
+              scrolled ? "text-[#1F140E]" : "text-white"
+            }`}>
+              FORMA
+            </span>
+            <span className="text-[7px] font-sans font-bold tracking-[0.6em] text-[#E6C594] uppercase mt-1 leading-none pl-[2px] transition-transform duration-300 group-hover:translate-x-1">
+              — STAIRS & ESTATES —
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-6">
             <NavLink to="/">Home</NavLink>
             <NavLink to="/wishlist">Wishlist</NavLink>
 
@@ -66,47 +84,70 @@ export default function Navbar() {
                 <NavLink to="/owner/add-property">Add Property</NavLink>
                 <NavLink to="/owner/my-listings">My Listings</NavLink>
                 <NavLink to="/owner/inquiries">Inquiries</NavLink>
-                <NavLink to="/messages">Messages</NavLink>
+                <NavLink to="/messages">Chat</NavLink>
               </>
             )}
-
-
           </nav>
 
           {/* Right Section */}
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-
-            <div className="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
-
+          <div className="flex items-center gap-4">
+            
+            {/* User Info / Auth */}
             {!user ? (
-              <div className="flex items-center gap-2">
-                <Link to="/login">
-                  <Button variant="ghost" className="hidden sm:inline-flex">
-                    Login
-                  </Button>
+              <div className="flex items-center gap-3">
+                <Link to="/login" className={`text-xs font-semibold uppercase tracking-wider transition-colors ${
+                  scrolled ? "text-[#2A1E17] hover:text-[#B39359]" : "text-white/80 hover:text-white"
+                }`}>
+                  Login
                 </Link>
                 <Link to="/register">
-                  <Button variant="primary">Get Started</Button>
+                  <span className="inline-flex items-center justify-center bg-[#E6C594]/15 hover:bg-[#E6C594]/30 border border-[#E6C594]/30 text-[#E6C594] rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-wider transition-all duration-300">
+                    Register
+                  </span>
                 </Link>
               </div>
             ) : (
-              <div className="flex items-center gap-3">
-                <Link to="/dashboard" className="hidden sm:flex flex-col items-end leading-tight hover:opacity-80 transition-opacity">
-                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+              <div className="flex items-center gap-4">
+                <Link 
+                  to="/dashboard" 
+                  className={`hidden sm:flex flex-col items-end leading-tight hover:opacity-80 transition-opacity`}
+                >
+                  <span className={`text-xs font-bold uppercase tracking-wider ${
+                    scrolled ? "text-[#2A1E17]" : "text-white"
+                  }`}>
                     {user.name}
+                  </span>
+                  <span className="text-[9px] font-medium text-[#E6C594]">
+                    {user.role === "ADMIN" ? "Administrator" : user.role === "OWNER" ? "Owner" : "Client"}
                   </span>
                 </Link>
 
-                <Button
-                  variant="outline"
+                <button
                   onClick={handleLogout}
-                  className="!px-3 !py-1.5 text-xs"
+                  className={`text-[10px] font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full border transition-all duration-300 ${
+                    scrolled 
+                      ? "border-[#2A1E17]/20 text-[#2A1E17] hover:bg-[#2A1E17] hover:text-white" 
+                      : "border-white/20 text-white hover:bg-white hover:text-[#120B08]"
+                  }`}
                 >
                   Logout
-                </Button>
+                </button>
               </div>
             )}
+
+            {/* Premium Get Consultation Pill Button */}
+            <button
+              onClick={scrollToConsultation}
+              className={`hidden md:inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-xs font-medium uppercase tracking-[0.1em] transition-all duration-300 ${
+                scrolled
+                  ? "bg-[#1E140F] hover:bg-[#E6C594] text-white hover:text-[#1E140F] shadow-md"
+                  : "bg-white hover:bg-[#E6C594] text-[#1E140F] hover:shadow-lg hover:shadow-[#E6C594]/20"
+              }`}
+            >
+              Get Consultation
+              <span className="text-xs transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </button>
+            
           </div>
         </div>
       </div>

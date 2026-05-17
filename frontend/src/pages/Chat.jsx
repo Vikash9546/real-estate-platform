@@ -148,7 +148,7 @@ export default function Chat() {
                     <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
                         <div className="flex items-center gap-3">
                             <div className="relative">
-                                <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold">
+                                <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold">
                                     {otherUser?.name?.[0]?.toUpperCase() || "?"}
                                 </div>
                                 <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white dark:border-slate-800 ${isOtherOnline ? "bg-green-500" : "bg-slate-400"}`} />
@@ -156,7 +156,7 @@ export default function Chat() {
                             <div>
                                 <h3 className="font-bold text-slate-900 dark:text-white">{otherUser?.name || "Chat"}</h3>
                                 {isTyping ? (
-                                    <p className="text-xs text-primary-500 font-medium animate-pulse">typing...</p>
+                                    <p className="text-xs text-slate-500 font-medium animate-pulse">typing...</p>
                                 ) : (
                                     <p className={`text-xs ${isOtherOnline ? "text-green-500" : "text-slate-400"}`}>
                                         {isOtherOnline ? "Online" : "Offline"}
@@ -198,7 +198,7 @@ export default function Chat() {
 
                                         {/* 3. Conditional colors: Blue for sender, Gray for receiver */}
                                         <div className={`px-4 py-2.5 rounded-2xl shadow-sm text-[15px] ${isMine
-                                                ? "bg-blue-500 text-white rounded-br-sm" 
+                                                ? "bg-slate-950 text-white rounded-br-sm" 
                                                 : "bg-gray-200 dark:bg-slate-700 text-slate-800 dark:text-gray-100 rounded-bl-sm"
                                                 }`}>
                                                 <p className="whitespace-pre-wrap">{msg.content}</p>

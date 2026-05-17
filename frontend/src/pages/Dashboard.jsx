@@ -78,7 +78,7 @@ export default function Dashboard() {
                     </div>
 
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full lg:w-auto">
-                        <StatCard title="My Listings" value={stats.listings} icon="🏠" color="bg-blue-100 dark:bg-blue-900/30 text-blue-600" />
+                        <StatCard title="My Listings" value={stats.listings} icon="🏠" color="bg-primary-100 dark:bg-primary-900/30 text-primary-600" />
                         <StatCard title="Inquiries" value={stats.inquiries} icon="📩" color="bg-amber-100 dark:bg-amber-900/30 text-amber-600" />
                         <StatCard title="Saved" value={stats.wishlist} icon="❤️" color="bg-rose-100 dark:bg-rose-900/30 text-rose-600" />
                     </div>
@@ -128,7 +128,7 @@ export default function Dashboard() {
                         {/* Recent Activity Mini-Feed */}
                         <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800">
                             <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                                <span className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-lg">⚡</span>
+                                <span className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg text-lg">⚡</span>
                                 Quick Links
                             </h4>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -156,8 +156,8 @@ export default function Dashboard() {
                                 <AreaChart data={stats.trend}>
                                     <defs>
                                         <linearGradient id="colorInq" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8} />
-                                            <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#000000" stopOpacity={0.8} />
+                                            <stop offset="95%" stopColor="#000000" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -165,9 +165,9 @@ export default function Dashboard() {
                                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} />
                                     <Tooltip
                                         contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '12px', color: '#fff' }}
-                                        itemStyle={{ color: '#818cf8', fontWeight: 'bold' }}
+                                        itemStyle={{ color: '#000000', fontWeight: 'bold' }}
                                     />
-                                    <Area type="monotone" dataKey="inquiries" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorInq)" />
+                                    <Area type="monotone" dataKey="inquiries" stroke="#000000" strokeWidth={3} fillOpacity={1} fill="url(#colorInq)" />
                                 </AreaChart>
                             </ResponsiveContainer>
                         </div>

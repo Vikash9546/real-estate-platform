@@ -9,17 +9,17 @@ export default function Button({
   className = "",
 }) {
   const base =
-    "inline-flex items-center justify-center rounded-xl px-4 py-2 font-semibold transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center rounded-xl px-4 py-2 font-semibold transition-all duration-300 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed border-2 border-transparent";
 
   const styles = {
     primary:
-      "bg-primary-600 text-white hover:bg-primary-700 shadow-md shadow-primary-500/20 hover:shadow-lg hover:shadow-primary-500/30",
+      "bg-primary-600 text-white hover:bg-transparent hover:border-primary-600 hover:text-primary-600 dark:hover:border-primary-500 dark:hover:text-primary-500 shadow-md shadow-primary-500/20 hover:shadow-none",
     danger:
-      "bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg",
+      "bg-red-500 text-white hover:bg-transparent hover:border-red-500 hover:text-red-500 shadow-md hover:shadow-none",
     outline:
-      "border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-900",
+      "border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-500",
     ghost:
-      "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900",
+      "text-slate-700 dark:text-slate-200 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20",
   };
 
   return (

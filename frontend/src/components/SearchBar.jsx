@@ -11,7 +11,7 @@ export default function SearchBar({ value, onChange, onSearch }) {
 
         <button
           onClick={onSearch}
-          className="rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 text-sm font-semibold shadow-sm transition"
+          className="rounded-xl bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 text-sm font-semibold shadow-sm transition"
         >
           Search
         </button>

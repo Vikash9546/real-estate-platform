@@ -46,10 +46,10 @@ export default function AdminLogin() {
             <Navbar />
 
             <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4">
-                <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl border-t-4 border-indigo-600 p-8 animate-fade-in relative overflow-hidden">
+                <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl border-t-4 border-primary-600 p-8 animate-fade-in relative overflow-hidden">
 
                     <div className="text-center mb-8 relative z-10">
-                        <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-100 uppercase bg-indigo-600 rounded-full">
+                        <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-primary-100 uppercase bg-primary-600 rounded-full">
                             Restricted Area
                         </span>
                         <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Portal</h2>
@@ -118,7 +118,7 @@ export default function AdminLogin() {
                         <Button
                             type="submit"
                             variant="primary"
-                            className="w-full !py-3 !bg-indigo-600 hover:!bg-indigo-700 shadow-indigo-500/25"
+                            className="w-full !py-3 !bg-primary-600 hover:!bg-primary-700 shadow-primary-500/25"
                             disabled={loading}
                         >
                             {loading ? "Authenticating..." : "Access Admin Panel"}
@@ -126,7 +126,7 @@ export default function AdminLogin() {
                     </form>
 
                     {/* Subtle background decoration */}
-                    <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl"></div>
+                    <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
 
                 </div>
