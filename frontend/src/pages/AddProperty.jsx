@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import Button from "../components/Button";
+import Footer from "../components/Footer";
 import { createProperty } from "../api/propertyApi";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ export default function AddProperty() {
     bedrooms: 1,
     bathrooms: 1,
     googleLocation: "",
-    imageUrl: "", // Added placeholder if supported by API or just for UI
+    imageUrl: "",
   });
 
   const handleChange = (e) =>
@@ -35,14 +35,13 @@ export default function AddProperty() {
         {
           ...form,
           price: Number(form.price),
-          area: Number(form.area) || 1000, // Default to 1000 sqft if empty
+          area: Number(form.area) || 1000,
           bedrooms: Number(form.bedrooms),
           bathrooms: Number(form.bathrooms),
         },
         token
       );
 
-      // alert("Property Added!");
       navigate("/owner/my-listings");
     } catch (err) {
       alert(err?.response?.data?.message || "Error creating property");
@@ -51,29 +50,33 @@ export default function AddProperty() {
     }
   };
 
-  const inputClass = "w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all";
-  const labelClass = "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1";
+  const inputClass = "w-full rounded-[14px] border border-[#E6C594]/30 focus:border-[#1E140F] bg-white px-4 py-3 text-xs text-[#1E140F] placeholder-[#A6978E] outline-none transition-all duration-300";
+  const labelClass = "block text-[10px] font-bold uppercase tracking-wider text-[#807268] mb-1.5";
 
   return (
-    <>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#2A1E17] font-sans antialiased flex flex-col justify-between">
+      <div>
         <Navbar />
 
-        <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-            <div className="p-8 border-b border-slate-200 dark:border-slate-800">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">List New Property</h2>
-              <p className="text-slate-500 mt-1">Fill in the details to list your property for rent.</p>
+        <main className="max-w-3xl mx-auto px-6 py-12 sm:px-8 mt-16">
+          <div className="bg-white rounded-[32px] border border-[#E6C594]/25 shadow-sm overflow-hidden">
+            
+            {/* Header Title */}
+            <div className="p-8 border-b border-[#E6C594]/20 bg-[#F6F3ED]/40 text-center space-y-1">
+              <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-[#B39359]">Owner Portfolio</span>
+              <h2 className="text-3xl font-serif font-light text-[#1E140F]">Draft Luxury Listing</h2>
+              <p className="text-xs text-[#807268] font-light">Publish an architectural asset to list it on the EstateX platform</p>
             </div>
 
             <form onSubmit={handleSubmit} className="p-8 space-y-6">
 
-              <div className="grid grid-cols-1 gap-6">
+              <div className="space-y-6">
+                
                 <div>
                   <label className={labelClass}>Property Title</label>
                   <input
                     name="title"
-                    placeholder="e.g. Luxury Apartment in City Center"
+                    placeholder="e.g. Minimalist glass penthouse with private botanical garden"
                     value={form.title}
                     onChange={handleChange}
                     className={inputClass}
@@ -83,10 +86,10 @@ export default function AddProperty() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className={labelClass}>City</label>
+                    <label className={labelClass}>City Location</label>
                     <input
                       name="city"
-                      placeholder="e.g. Mumbai"
+                      placeholder="e.g. Jaipur"
                       value={form.city}
                       onChange={handleChange}
                       className={inputClass}
@@ -94,11 +97,11 @@ export default function AddProperty() {
                     />
                   </div>
                   <div>
-                    <label className={labelClass}>Monthly Rent (₹)</label>
+                    <label className={labelClass}>Monthly Rental Value (₹)</label>
                     <input
                       name="price"
                       type="number"
-                      placeholder="e.g. 25000"
+                      placeholder="e.g. 150000"
                       value={form.price}
                       onChange={handleChange}
                       className={inputClass}
@@ -108,10 +111,10 @@ export default function AddProperty() {
                 </div>
 
                 <div>
-                  <label className={labelClass}>Full Address</label>
+                  <label className={labelClass}>Full Spatial Address</label>
                   <input
                     name="address"
-                    placeholder="e.g. 123, Green Park, Main Road"
+                    placeholder="e.g. 45 Royal Boulevard, C-Scheme"
                     value={form.address}
                     onChange={handleChange}
                     className={inputClass}
@@ -123,22 +126,22 @@ export default function AddProperty() {
                   <label className={labelClass}>Google Maps Location URL</label>
                   <input
                     name="googleLocation"
-                    placeholder="Paste Google Maps link here"
+                    placeholder="Paste share link here"
                     value={form.googleLocation}
                     onChange={handleChange}
                     className={inputClass}
                     required
                     type="url"
                   />
-                  <p className="mt-1 text-xs text-slate-500">Go to Google Maps, find your property, click Share, and copy the link.</p>
+                  <p className="mt-1.5 text-[10px] text-[#A6978E] font-light">Copy link from Google Maps -> Share -> Copy link.</p>
                 </div>
 
                 <div>
-                  <label className={labelClass}>Area (Square Feet)</label>
+                  <label className={labelClass}>Total Architectural Area (Square Feet)</label>
                   <input
                     name="area"
                     type="number"
-                    placeholder="e.g. 1200"
+                    placeholder="e.g. 2400"
                     value={form.area}
                     onChange={handleChange}
                     className={inputClass}
@@ -153,7 +156,7 @@ export default function AddProperty() {
                       name="bedrooms"
                       value={form.bedrooms}
                       onChange={handleChange}
-                      className={inputClass}
+                      className={`${inputClass} appearance-none cursor-pointer`}
                     >
                       {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n}>{n} BHK</option>)}
                     </select>
@@ -164,47 +167,52 @@ export default function AddProperty() {
                       name="bathrooms"
                       value={form.bathrooms}
                       onChange={handleChange}
-                      className={inputClass}
+                      className={`${inputClass} appearance-none cursor-pointer`}
                     >
-                      {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
+                      {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n} Baths</option>)}
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className={labelClass}>Description</label>
+                  <label className={labelClass}>Architectural Curation Narrative</label>
                   <textarea
                     name="description"
                     rows="4"
-                    placeholder="Describe the property features, amenities, etc."
+                    placeholder="Describe spatial aspects, materials (glass, timber, stone), solar orientation, and nearby neighborhood metrics."
                     value={form.description}
                     onChange={handleChange}
-                    className={inputClass}
+                    className={`${inputClass} py-3 h-32 resize-none`}
                   />
                 </div>
               </div>
 
-              <div className="pt-4 flex items-center justify-end gap-3">
-                <Button
-                  variant="outline"
+              <div className="pt-6 border-t border-[#E6C594]/20 flex items-center justify-end gap-3.5">
+                <button
                   type="button"
                   onClick={() => navigate(-1)}
+                  className="px-6 py-2.5 border border-[#E6C594]/30 hover:border-[#1E140F] text-[#1E140F] hover:bg-[#FAF8F5] rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300"
                 >
                   Cancel
-                </Button>
-                <Button
-                  variant="primary"
+                </button>
+                <button
                   type="submit"
                   disabled={loading}
-                  className="!px-8"
+                  className="group flex items-center justify-between gap-4 bg-[#1E140F] hover:bg-[#B39359] text-white rounded-full pl-6 pr-2 py-2.5 font-semibold uppercase tracking-wider text-[10px] transition-all duration-300 shadow-sm disabled:opacity-50"
                 >
-                  {loading ? "Creating..." : "Create Listing"}
-                </Button>
+                  {loading ? "Publishing..." : "Publish Listing"}
+                  <span className="w-7 h-7 rounded-full bg-[#FAF8F5] text-[#1E140F] flex items-center justify-center text-xs font-bold transition-transform group-hover:translate-x-0.5">
+                    →
+                  </span>
+                </button>
               </div>
+
             </form>
           </div>
-        </div>
+        </main>
       </div>
-    </>
+
+      <Footer />
+    </div>
   );
 }

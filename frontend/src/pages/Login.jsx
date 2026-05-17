@@ -4,6 +4,7 @@ import { loginUser } from "../api/authApi";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "../components/Button";
+import Footer from "../components/Footer";
 
 export default function Login() {
   const { fetchMe } = useContext(AuthContext);
@@ -25,7 +26,6 @@ export default function Login() {
       localStorage.setItem("token", res.data.token);
       const userData = await fetchMe();
 
-      // Redirect based on user role
       if (userData.role === "ADMIN") {
         navigate("/admin/dashboard");
       } else {
@@ -39,75 +39,89 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Navbar />
+    <div className="min-h-screen bg-[#FAF8F5] text-[#2A1E17] font-sans antialiased flex flex-col justify-between">
+      <div>
+        <Navbar />
 
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4">
-        <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8 animate-fade-in">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Welcome Back</h2>
-            <p className="text-slate-500 dark:text-slate-400 mt-2">Sign in to manage your account</p>
-          </div>
-
-          {error && (
-            <div className="mb-6 p-4 rounded-lg bg-red-50 text-red-600 text-sm border border-red-100 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Email Address
-              </label>
-              <input
-                name="email"
-                placeholder="name@example.com"
-                value={form.email}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-                required
-              />
+        <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-6 py-12 mt-16">
+          <div className="w-full max-w-md bg-white rounded-[32px] border border-[#E6C594]/25 p-10 shadow-sm space-y-8">
+            
+            {/* Editorial Title */}
+            <div className="text-center space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#B39359]">Welcome Back</span>
+              <h2 className="text-3xl font-serif font-light text-[#1E140F]">Account Portal</h2>
+              <p className="text-xs text-[#807268] font-light">Sign in to coordinate your luxury portfolios</p>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  Password
-                </label>
-                <Link to="/forgot-password" className="text-sm font-medium text-primary-600 hover:text-primary-700">
-                  Forgot password?
-                </Link>
+            {error && (
+              <div className="p-4 rounded-2xl bg-red-50 text-red-600 text-xs border border-red-100">
+                {error}
               </div>
-              <input
-                name="password"
-                type="password"
-                placeholder="Enter your password"
-                value={form.password}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-                required
-              />
-            </div>
+            )}
 
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-full !py-3"
-              disabled={loading}
-            >
-              {loading ? "Signing in..." : "Sign In"}
-            </Button>
-          </form>
+            <form onSubmit={handleLogin} className="space-y-6">
+              
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#807268]">
+                  Email Address
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="w-full rounded-[14px] border border-[#E6C594]/30 focus:border-[#1E140F] bg-white px-4 py-3 text-xs text-[#1E140F] placeholder-[#A6978E] outline-none transition-all duration-300"
+                  required
+                />
+              </div>
 
-          <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
-            Don't have an account?{" "}
-            <Link to="/register" className="font-semibold text-primary-600 hover:text-primary-700">
-              Create Account
-            </Link>
-          </p>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#807268]">
+                    Password
+                  </label>
+                  <Link to="/forgot-password" className="text-[10px] font-semibold text-[#B39359] hover:text-[#1E140F] transition-colors">
+                    Forgot Key?
+                  </Link>
+                </div>
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="Enter your security password"
+                  value={form.password}
+                  onChange={handleChange}
+                  className="w-full rounded-[14px] border border-[#E6C594]/30 focus:border-[#1E140F] bg-white px-4 py-3 text-xs text-[#1E140F] placeholder-[#A6978E] outline-none transition-all duration-300"
+                  required
+                />
+              </div>
+
+              {/* Login Button with Premium Circle Arrow style */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="group flex items-center justify-between gap-4 bg-[#1E140F] hover:bg-[#B39359] text-white rounded-full pl-6 pr-2 py-2.5 font-semibold uppercase tracking-wider text-[10px] transition-all duration-300 w-full shadow-sm mt-8 disabled:opacity-50"
+              >
+                {loading ? "Authorizing Security..." : "Secure Sign In"}
+                <span className="w-8 h-8 rounded-full bg-[#FAF8F5] text-[#1E140F] flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 text-xs font-bold">
+                  →
+                </span>
+              </button>
+
+            </form>
+
+            <p className="text-center text-xs text-[#807268] font-light pt-4 border-t border-[#FAF8F5]/80">
+              New to EstateX?{" "}
+              <Link to="/register" className="font-semibold text-[#B39359] hover:text-[#1E140F] transition-colors pl-1">
+                Create Curation Account
+              </Link>
+            </p>
+
+          </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import Button from "../components/Button";
+import Footer from "../components/Footer";
 import { deleteProperty, getOwnerProperties } from "../api/propertyApi";
 import { useNavigate } from "react-router-dom";
 
@@ -48,172 +48,150 @@ export default function MyListings() {
   };
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#2A1E17] font-sans antialiased flex flex-col justify-between">
+      <div>
         <Navbar />
 
-        <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <main className="max-w-7xl mx-auto px-6 py-12 sm:px-8 mt-16">
+          
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
-              My Listings
-            </h1>
-            <p className="text-slate-600 dark:text-slate-400">
-              Manage your property listings
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-8 border-b border-[#E6C594]/20 gap-6">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#B39359]">Member Area</span>
+              <h1 className="text-4xl md:text-5xl font-serif font-light text-[#1E140F] mt-1">My Managed Assets</h1>
+              <p className="text-xs text-[#807268] font-light mt-2">
+                Manage, edit parameters, and inspect inquiries on your active architectural portfolio
+              </p>
+            </div>
+            {!loading && listings.length > 0 && (
+              <button
+                onClick={() => navigate("/owner/add-property")}
+                className="bg-[#1E140F] hover:bg-[#B39359] text-white rounded-full px-8 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm whitespace-nowrap"
+              >
+                + Add New Property
+              </button>
+            )}
           </div>
 
-          {/* Loading State */}
+          {/* Loading state */}
           {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            <div className="flex justify-center items-center py-20 animate-pulse">
+              <div className="w-10 h-10 rounded-full border-2 border-t-transparent border-[#B39359] animate-spin"></div>
             </div>
           ) : listings.length === 0 ? (
+            
             /* Empty State */
-            <div className="text-center py-20">
-              <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-12">
-                <div className="text-6xl mb-4">🏠</div>
-                <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
-                  No listings yet
-                </h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-6">
-                  Start by adding your first property listing
+            <div className="text-center py-20 max-w-xl mx-auto">
+              <div className="bg-white rounded-[32px] border border-[#E6C594]/25 p-12 shadow-sm space-y-4">
+                <div className="text-5xl">🏰</div>
+                <h3 className="text-xl font-serif font-light text-[#1E140F]">No Active Listings</h3>
+                <p className="text-xs text-[#807268] font-light leading-relaxed px-4">
+                  You have not published any architectural listings on the EstateX platform yet. Post your property now to receive bespoke curations.
                 </p>
-                <Button
-                  variant="primary"
+                <button
                   onClick={() => navigate("/owner/add-property")}
+                  className="bg-[#1E140F] hover:bg-[#B39359] text-white rounded-full px-8 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm mt-4"
                 >
-                  Add Property
-                </Button>
+                  Add Your First Property
+                </button>
               </div>
             </div>
+
           ) : (
-            /* Property Grid */
+            
+            /* Property list vertical grid */
             <div className="grid grid-cols-1 gap-6">
               {listings.map((property) => (
                 <div
                   key={property.id}
-                  className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  className="bg-white rounded-[28px] border border-[#E6C594]/25 overflow-hidden shadow-sm transition-all duration-300 hover:border-[#1E140F] p-8"
                 >
-                  <div className="p-6">
-                    <div className="flex items-start justify-between gap-4">
-                      {/* Property Info */}
-                      <div className="flex-1">
-                        <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
+                  <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    
+                    {/* Left Info block */}
+                    <div className="flex-1 space-y-3">
+                      <div>
+                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#B39359]">{property.type || "Masterpiece"}</span>
+                        <h3 className="text-2xl font-serif font-light text-[#1E140F] mt-0.5">
                           {property.title}
                         </h3>
-                        <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500 dark:text-slate-400 mb-4">
-                          <span className="flex items-center gap-1.5">
-                            <span className="text-lg">📍</span>
-                            {property.city}
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <span className="text-lg">🛏</span>
-                            {property.bedrooms} BHK
-                          </span>
-                          <span className="flex items-center gap-1.5 font-bold text-primary-600 dark:text-primary-400">
-                            <span className="text-lg">📈</span>
-                            {property._count?.inquiries || 0} Inquiries
-                          </span>
-                        </div>
-
-                        <div className="flex items-baseline gap-2 mb-4">
-                          <span className="text-2xl font-black text-slate-900 dark:text-white">₹{property.price.toLocaleString()}</span>
-                          <span className="text-sm text-slate-500">/ month</span>
-                        </div>
-
-                        {/* Status & Date */}
-                        <div className="flex items-center gap-3">
-                          <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
-                            Added {new Date(property.createdAt).toLocaleDateString()}
-                          </span>
-                        </div>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex flex-col gap-2 min-w-[120px]">
-                        <Button
-                          variant="outline"
-                          onClick={() => navigate(`/property/${property.id}`)}
-                          className="!py-2 !text-sm"
-                        >
-                          View Details
-                        </Button>
-                        <Button
-                          variant="danger"
-                          onClick={() => handleDeleteClick(property.id, property.title)}
-                          disabled={deleteLoading === property.id}
-                          className="!py-2 !text-sm"
-                        >
-                          {deleteLoading === property.id ? (
-                            <span className="flex items-center gap-2">
-                              <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                              </svg>
-                              Deleting...
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-1">
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                              </svg>
-                              Delete
-                            </span>
-                          )}
-                        </Button>
+                      <div className="flex flex-wrap items-center gap-6 text-xs text-[#807268] font-light">
+                        <span className="flex items-center gap-1.5">
+                          <span>📍</span> {property.city}
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <span>🛏️</span> {property.bedrooms} BHK
+                        </span>
+                        <span className="flex items-center gap-1.5 text-emerald-600 font-semibold">
+                          <span>📈</span> {property._count?.inquiries || 0} Inquiries received
+                        </span>
+                      </div>
+
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-2xl font-serif font-light text-[#1E140F]">₹{property.price.toLocaleString()}</span>
+                        <span className="text-xs text-[#807268] font-light">/ month</span>
+                      </div>
+
+                      <div className="text-[10px] text-[#A6978E] font-light uppercase tracking-widest pt-2">
+                        Published {new Date(property.createdAt).toLocaleDateString()}
                       </div>
                     </div>
+
+                    {/* Right actions block */}
+                    <div className="flex sm:flex-row md:flex-col gap-3 w-full md:w-auto">
+                      <button
+                        onClick={() => navigate(`/property/${property.id}`)}
+                        className="w-full border border-[#E6C594]/30 hover:border-[#1E140F] text-[#1E140F] hover:bg-[#FAF8F5] rounded-full py-2.5 px-6 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center whitespace-nowrap"
+                      >
+                        View Details
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(property.id, property.title)}
+                        disabled={deleteLoading === property.id}
+                        className="w-full border border-red-200 hover:border-red-500 text-red-600 hover:bg-red-50 rounded-full py-2.5 px-6 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 disabled:opacity-50"
+                      >
+                        {deleteLoading === property.id ? "Archiving..." : "Archive List"}
+                      </button>
+                    </div>
+
                   </div>
                 </div>
               ))}
             </div>
-          )}
 
-          {/* Add Property Button (if listings exist) */}
-          {!loading && listings.length > 0 && (
-            <div className="mt-8 text-center">
-              <Button
-                variant="primary"
-                onClick={() => navigate("/owner/add-property")}
-                className="!px-8"
-              >
-                + Add Another Property
-              </Button>
-            </div>
           )}
-        </div>
+        </main>
       </div>
 
-      {/* Custom Confirmation Modal */}
+      {/* Exquisite custom confirmation modal */}
       {propertyToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 w-full max-w-md p-6 overflow-hidden">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Delete Property</h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
-              Are you sure you want to delete <span className="font-semibold">"{propertyToDelete.title}"</span>? This action cannot be undone.
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-[#1E140F]/40 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-[32px] border border-[#E6C594]/35 w-full max-w-md p-8 space-y-6 shadow-xl">
+            <h3 className="text-2xl font-serif font-light text-[#1E140F]">Archive Listing?</h3>
+            <p className="text-xs text-[#807268] leading-relaxed font-light">
+              Are you certain you want to archive and delete <span className="font-semibold text-[#1E140F]">"{propertyToDelete.title}"</span>? This will permanently sever all tenant inquiry links.
             </p>
-            <div className="flex justify-end gap-3">
-              <Button
-                variant="outline"
+            <div className="flex justify-end gap-3 pt-2">
+              <button
                 onClick={() => setPropertyToDelete(null)}
-                className="!px-6"
-                disabled={deleteLoading === propertyToDelete.id}
+                className="px-6 py-2.5 border border-[#E6C594]/30 hover:border-[#1E140F] text-[#1E140F] hover:bg-[#FAF8F5] rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300"
               >
                 Cancel
-              </Button>
-              <Button
-                variant="primary"
+              </button>
+              <button
                 onClick={confirmDelete}
-                className="!px-6 !bg-red-600 hover:!bg-red-700 !shadow-red-500/30"
-                disabled={deleteLoading === propertyToDelete.id}
+                className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300 shadow-sm"
               >
-                {deleteLoading === propertyToDelete.id ? "Deleting..." : "Delete"}
-              </Button>
+                Archive Property
+              </button>
             </div>
           </div>
         </div>
       )}
-    </>
+
+      <Footer />
+    </div>
   );
 }
