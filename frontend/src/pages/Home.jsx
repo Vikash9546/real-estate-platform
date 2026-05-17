@@ -239,26 +239,6 @@ export default function Home() {
             <p className="text-[#594B41] font-light text-sm md:text-base leading-relaxed tracking-wide">
               EstateX is a premier real estate platform dedicated to connecting discerning buyers and tenants with architectural masterpieces. Built on a foundation of trust, aesthetic excellence, and white-glove service, we curate properties that represent the pinnacle of design, construction, and lifestyle. Every listing is verified, and every detail scrutinized.
             </p>
-
-            {/* Statistics */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-[#E6C594]/20">
-              <div>
-                <p className="text-3xl font-serif font-medium text-[#1E140F]">14+</p>
-                <p className="text-[10px] text-[#807268] font-bold uppercase tracking-wider mt-1">years of trust</p>
-              </div>
-              <div>
-                <p className="text-3xl font-serif font-medium text-[#1E140F]">950+</p>
-                <p className="text-[10px] text-[#807268] font-bold uppercase tracking-wider mt-1">estates cataloged</p>
-              </div>
-              <div>
-                <p className="text-3xl font-serif font-medium text-[#1E140F]">99%</p>
-                <p className="text-[10px] text-[#807268] font-bold uppercase tracking-wider mt-1">satisfied clients</p>
-              </div>
-              <div>
-                <p className="text-3xl font-serif font-medium text-[#1E140F]">100%</p>
-                <p className="text-[10px] text-[#807268] font-bold uppercase tracking-wider mt-1">verified owners</p>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -505,7 +485,7 @@ export default function Home() {
               />
               <button
                 onClick={() => fetchProperties(1, data.limit)}
-                className="bg-[#1E140F] hover:bg-[#B39359] text-white rounded-xl px-8 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300"
+                className="bg-[#1E140F] hover:bg-[#B39359] text-white rounded-full px-8 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300"
               >
                 Search
               </button>

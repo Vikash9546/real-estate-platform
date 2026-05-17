@@ -11,6 +11,15 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
   const labelClasses = 
     "text-[9px] font-bold uppercase tracking-[0.15em] text-[#807268]";
 
+  // Custom premium gold chevron down arrow style for select boxes
+  const selectStyle = {
+    backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23B39359' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+    backgroundPosition: 'right 16px center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '16px',
+    paddingRight: '36px'
+  };
+
   return (
     <aside className="lg:col-span-3">
       <div className="lg:sticky lg:top-28 rounded-[28px] border border-[#E6C594]/20 bg-white shadow-sm p-6 space-y-6">
@@ -70,6 +79,7 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
             name="bedrooms"
             value={filters.bedrooms}
             onChange={handleChange}
+            style={selectStyle}
             className={`${inputClasses} appearance-none cursor-pointer`}
           >
             <option value="">Any Bedrooms</option>
@@ -87,6 +97,7 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
             name="furnished"
             value={filters.furnished}
             onChange={handleChange}
+            style={selectStyle}
             className={`${inputClasses} appearance-none cursor-pointer`}
           >
             <option value="">Any</option>
@@ -102,6 +113,7 @@ export default function FiltersAside({ filters, setFilters, onApply, onClear }) 
             name="sort"
             value={filters.sort}
             onChange={handleChange}
+            style={selectStyle}
             className={`${inputClasses} appearance-none cursor-pointer`}
           >
             <option value="newest">Newest Listed</option>
