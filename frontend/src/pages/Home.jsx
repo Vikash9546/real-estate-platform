@@ -186,29 +186,29 @@ export default function Home() {
 
         {/* 3 Trust Badges Bar */}
         <div className="relative z-10 max-w-7xl mx-auto w-full px-6 sm:px-8 mt-16">
-          <div className="border-t border-[#FAF8F5]/10 pt-8 flex flex-col md:flex-row gap-6 md:gap-12">
+          <div className="border-t border-[#E6C594]/30 pt-8 flex flex-col md:flex-row gap-6 md:gap-12">
             
             <div className="flex items-center gap-3">
-              <span className="text-[#E6C594] text-xl">🏰</span>
+              <span className="text-xl">🏰</span>
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#E6C594]">Curated Estates</p>
-                <p className="text-[10px] text-[#A6978E] font-light mt-0.5">Architect-designed homes, historic villas, and luxury penthouses</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1E140F]">Curated Estates</p>
+                <p className="text-[10px] text-[#594B41] font-light mt-0.5">Architect-designed homes, historic villas, and luxury penthouses</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-[#E6C594] text-xl">🤝</span>
+              <span className="text-xl">🤝</span>
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#E6C594]">Seamless Transactions</p>
-                <p className="text-[10px] text-[#A6978E] font-light mt-0.5">Direct communication with verified owners and transparent inquiries</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1E140F]">Seamless Transactions</p>
+                <p className="text-[10px] text-[#594B41] font-light mt-0.5">Direct communication with verified owners and transparent inquiries</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-[#E6C594] text-xl">🌿</span>
+              <span className="text-xl">🌿</span>
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#E6C594]">Sustainable Living</p>
-                <p className="text-[10px] text-[#A6978E] font-light mt-0.5">Eco-friendly architectures, solar integrations, and smart standards</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1E140F]">Sustainable Living</p>
+                <p className="text-[10px] text-[#594B41] font-light mt-0.5">Eco-friendly architectures, solar integrations, and smart standards</p>
               </div>
             </div>
 
