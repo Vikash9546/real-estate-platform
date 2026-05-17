@@ -64,13 +64,18 @@ export default function Navbar() {
           
           {/* Logo */}
           <Link to="/" className="flex flex-col items-start group">
-            <span className={`text-lg font-serif font-light tracking-[0.25em] uppercase leading-none transition-colors duration-300 ${
-              scrolled ? "text-[#1F140E]" : "text-white"
-            }`}>
-              FORMA
-            </span>
-            <span className="text-[7px] font-sans font-bold tracking-[0.6em] text-[#E6C594] uppercase mt-1 leading-none pl-[2px] transition-transform duration-300 group-hover:translate-x-1">
-              — STAIRS & ESTATES —
+            <div className="flex items-baseline leading-none">
+              <span className={`text-2xl font-serif font-light tracking-[0.08em] transition-colors duration-500 ${
+                scrolled ? "text-[#1E140F]" : "text-white"
+              }`}>
+                Estate
+              </span>
+              <span className="text-3xl font-serif italic font-normal text-[#E6C594] ml-0.5 relative -top-[2px] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 inline-block">
+                X
+              </span>
+            </div>
+            <span className="text-[6.5px] font-sans font-bold tracking-[0.55em] text-[#E6C594] uppercase mt-1.5 leading-none pl-[1px] transition-all duration-300 group-hover:tracking-[0.65em]">
+              — LUXURY PORTFOLIO —
             </span>
           </Link>
 

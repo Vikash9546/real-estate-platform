@@ -24,12 +24,17 @@ export default function Footer() {
           
           {/* Logo & Description */}
           <div className="lg:col-span-3 space-y-6">
-            <div className="flex flex-col items-start cursor-pointer" onClick={handleScrollToTop}>
-              <span className="text-2xl font-serif font-light tracking-[0.25em] uppercase leading-none text-white">
-                FORMA
-              </span>
-              <span className="text-[8px] font-sans font-bold tracking-[0.55em] text-[#E6C594] uppercase mt-1.5 leading-none pl-[2px]">
-                — STAIRS —
+            <div className="flex flex-col items-start cursor-pointer group" onClick={handleScrollToTop}>
+              <div className="flex items-baseline leading-none">
+                <span className="text-2xl font-serif font-light tracking-[0.08em] text-white">
+                  Estate
+                </span>
+                <span className="text-3xl font-serif italic font-normal text-[#E6C594] ml-0.5 relative -top-[2px] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 inline-block">
+                  X
+                </span>
+              </div>
+              <span className="text-[6.5px] font-sans font-bold tracking-[0.55em] text-[#E6C594] uppercase mt-1.5 leading-none pl-[1px] transition-all duration-300 group-hover:tracking-[0.65em]">
+                — LUXURY PORTFOLIO —
               </span>
             </div>
             <p className="text-[#A6978E] text-xs leading-relaxed max-w-xs font-light">
