@@ -75,7 +75,7 @@ export default function Navbar() {
               </span>
             </div>
             <span className="text-[6.5px] font-sans font-bold tracking-[0.55em] text-[#E6C594] uppercase mt-1.5 leading-none pl-[1px] transition-all duration-300 group-hover:tracking-[0.65em]">
-              — LUXURY PORTFOLIO —
+            Premium Real Estate Platform
             </span>
           </Link>
 

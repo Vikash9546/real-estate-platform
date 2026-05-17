@@ -38,13 +38,13 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-[#A6978E] text-xs leading-relaxed max-w-xs font-light">
-              Manufacturing of premium staircases for residential and commercial interiors. Custom tailor-made approaches from initial concept to final assembly.
+              Exclusive full-stack curation and marketing of luxury architectural residences, high-end apartments, and premium commercial estates.
             </p>
             
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-2">
               <a href="#" className="w-8 h-8 rounded-full border border-[#FAF8F5]/10 flex items-center justify-center text-[#A6978E] hover:text-[#E6C594] hover:border-[#E6C594] transition-all duration-300 text-xs">
-                vk
+                in
               </a>
               <a href="#" className="w-8 h-8 rounded-full border border-[#FAF8F5]/10 flex items-center justify-center text-[#A6978E] hover:text-[#E6C594] hover:border-[#E6C594] transition-all duration-300 text-xs">
                 tg
@@ -59,11 +59,11 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3 className="text-white font-serif text-[18px] tracking-wide mb-6">Catalog</h3>
             <ul className="space-y-3">
-              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Straight Stairs</Link></li>
-              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Spiral Stairs</Link></li>
-              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Mono-Stringer Stairs</Link></li>
-              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Floating Stairs</Link></li>
-              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Combined Designs</Link></li>
+              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Modern Villas</Link></li>
+              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Historic Estates</Link></li>
+              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Minimal Penthouses</Link></li>
+              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Commercial Spaces</Link></li>
+              <li><Link to="/#catalog" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Off-Market Deals</Link></li>
             </ul>
           </div>
 
@@ -71,10 +71,10 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3 className="text-white font-serif text-[18px] tracking-wide mb-6">Buyers</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Bespoke Projects</a></li>
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Materials & Finishes</a></li>
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Delivery & Assembly</a></li>
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Warranty terms</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Buying Process</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Portfolio Curation</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Legal Assistance</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Financing Partners</a></li>
               <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">FAQs & Help</a></li>
             </ul>
           </div>
@@ -83,31 +83,31 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3 className="text-white font-serif text-[18px] tracking-wide mb-6">Company</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">About Us</a></li>
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Manufacturing</a></li>
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Our Portfolio</a></li>
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Journal</a></li>
-              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Contacts</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">About EstateX</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Our Concierge</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Design Journal</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Featured Press</a></li>
+              <li><a href="#" className="text-[#A6978E] hover:text-[#E6C594] transition-colors text-xs font-light">Contact Us</a></li>
             </ul>
           </div>
 
           {/* Contacts & Callback */}
           <div className="lg:col-span-3 space-y-6">
-            <h3 className="text-white font-serif text-[18px] tracking-wide mb-6">Contacts</h3>
+            <h3 className="text-white font-serif text-[18px] tracking-wide mb-6">Concierge</h3>
             <div className="space-y-4">
               <div>
-                <a href="tel:+74951204567" className="text-lg font-semibold text-white hover:text-[#E6C594] transition-colors">
-                  +7 (495) 120-45-67
+                <a href="tel:+911415058888" className="text-lg font-semibold text-white hover:text-[#E6C594] transition-colors">
+                  +91 (141) 505-8888
                 </a>
               </div>
               <div>
-                <a href="mailto:info@formastairs.ru" className="text-xs text-[#A6978E] hover:text-[#E6C594] transition-colors">
-                  info@formastairs.ru
+                <a href="mailto:concierge@estatex.com" className="text-xs text-[#A6978E] hover:text-[#E6C594] transition-colors">
+                  concierge@estatex.com
                 </a>
               </div>
               <div className="text-xs text-[#A6978E] leading-relaxed font-light">
-                15 Stroiteley St, Moscow <br />
-                Workshop and Showroom
+                Royal Palms Towers, C-Scheme <br />
+                Jaipur Showroom
               </div>
               
               <button
@@ -123,7 +123,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#FAF8F5]/10 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-[#A6978E] font-light">
           <p>
-            &copy; {new Date().getFullYear()} FORMA STAIRS. All rights reserved.
+            &copy; {new Date().getFullYear()} EstateX. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
