@@ -133,7 +133,7 @@ export default function AddProperty() {
                     required
                     type="url"
                   />
-                  <p className="mt-1.5 text-[10px] text-[#A6978E] font-light">Copy link from Google Maps -> Share -> Copy link.</p>
+                  <p className="mt-1.5 text-[10px] text-[#A6978E] font-light">Copy link from Google Maps &rarr; Share &rarr; Copy link.</p>
                 </div>
 
                 <div>
